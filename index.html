@@ -5,10 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nhà Thám Hiểm Ngôn Từ – Giải Mã Mưa Mùa Xuân</title>
-    <meta name="description" content="Trò chơi giáo dục tương tác cho học sinh lớp 5: Chọn từ thích hợp để hoàn thành đoạn văn Mưa mùa xuân.">
+    <meta name="description"
+        content="Trò chơi giáo dục tương tác cho học sinh lớp 5: Chọn từ thích hợp để hoàn thành đoạn văn Mưa mùa xuân.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,800&display=swap"
+        rel="stylesheet">
     <style>
         /* ============================================
            1. CSS CUSTOM PROPERTIES
@@ -328,7 +331,9 @@
         }
 
         @keyframes bob {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: translateY(0) rotate(0deg);
             }
 
@@ -430,6 +435,37 @@
 
         .form-input::placeholder {
             color: #9cb8c6;
+        }
+
+        #student-name {
+            text-transform: uppercase;
+        }
+
+        .attempt-pill {
+            display: inline-block;
+            padding: 2px 8px;
+            background: #eef7ff;
+            color: #0b6792;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 12px;
+        }
+
+        select.form-input {
+            appearance: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            padding-right: 38px;
+            font-weight: 700;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%23087ba8' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+        }
+
+        select.form-input:disabled {
+            background-color: #f7f9fa;
+            opacity: 0.7;
+            cursor: not-allowed;
         }
 
         .form-message {
@@ -750,9 +786,21 @@
         }
 
         @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-6px); }
-            40%, 80% { transform: translateX(6px); }
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20%,
+            60% {
+                transform: translateX(-6px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(6px);
+            }
         }
 
         .shake {
@@ -1300,12 +1348,14 @@
                                 <stop offset="100%" stop-color="#20b7dc" />
                             </linearGradient>
                         </defs>
-                        <path d="M45 5C31 27 10 51 10 72a35 35 0 0 0 70 0C80 51 59 27 45 5Z" fill="url(#dropGrad)" stroke="#087ba8" stroke-width="3" />
+                        <path d="M45 5C31 27 10 51 10 72a35 35 0 0 0 70 0C80 51 59 27 45 5Z" fill="url(#dropGrad)"
+                            stroke="#087ba8" stroke-width="3" />
                         <ellipse cx="32" cy="70" rx="3.2" ry="4.5" fill="#174564" />
                         <ellipse cx="58" cy="70" rx="3.2" ry="4.5" fill="#174564" />
                         <ellipse cx="32" cy="68" rx="1.5" ry="1.5" fill="white" opacity="0.8" />
                         <ellipse cx="58" cy="68" rx="1.5" ry="1.5" fill="white" opacity="0.8" />
-                        <path d="M36 83q9 9 18 0" fill="none" stroke="#174564" stroke-width="3" stroke-linecap="round" />
+                        <path d="M36 83q9 9 18 0" fill="none" stroke="#174564" stroke-width="3"
+                            stroke-linecap="round" />
                         <circle cx="23" cy="79" r="5.5" fill="#ff9aab" opacity="0.7" />
                         <circle cx="67" cy="79" r="5.5" fill="#ff9aab" opacity="0.7" />
                     </svg>
@@ -1322,22 +1372,32 @@
             </header>
 
             <!-- ── Section 1: Student Info ── -->
-            <section class="card" aria-labelledby="intro-heading">
+            <section id="identity-section" class="card" aria-labelledby="intro-heading">
                 <div class="info-header">
                     <div class="info-icon" aria-hidden="true">✦</div>
                     <div>
                         <h2 id="intro-heading" class="info-title">Chào mừng nhà thám hiểm! 🌟</h2>
-                        <p class="info-desc">Hãy chọn từ thích hợp nhất trong mỗi hộp thả xuống để hoàn thành đoạn văn.</p>
+                        <p class="info-desc">Hãy chọn từ thích hợp nhất trong mỗi hộp thả xuống để hoàn thành đoạn văn.
+                        </p>
                     </div>
                 </div>
                 <form id="identity-form" class="form-grid" novalidate>
                     <div>
                         <label for="student-name" class="form-label">Họ và tên học sinh</label>
-                        <input id="student-name" class="form-input" type="text" placeholder="Nhập họ và tên..." autocomplete="name" maxlength="100" required>
+                        <input id="student-name" class="form-input" type="text" placeholder="VD: NGUYỄN VĂN A"
+                            autocomplete="name" maxlength="100" required>
                     </div>
                     <div>
                         <label for="student-class" class="form-label">Lớp</label>
-                        <input id="student-class" class="form-input" type="text" placeholder="VD: 5A" maxlength="30" required>
+                        <select id="student-class" class="form-input" required>
+                            <option value="">-- Chọn lớp --</option>
+                            <option value="5A1">5A1</option>
+                            <option value="5A2">5A2</option>
+                            <option value="5A3">5A3</option>
+                            <option value="5A4">5A4</option>
+                            <option value="5A5">5A5</option>
+                            <option value="5A6">5A6</option>
+                        </select>
                     </div>
                     <div>
                         <label class="form-label" style="opacity:0;" aria-hidden="true">.</label>
@@ -1352,7 +1412,8 @@
                 <div class="exercise-header">
                     <div>
                         <p class="exercise-kicker">Bài tập</p>
-                        <h2 id="exercise-title" class="exercise-title">3. Chọn từ thích hợp trong ngoặc đơn để hoàn thành đoạn văn.</h2>
+                        <h2 id="exercise-title" class="exercise-title">3. Chọn từ thích hợp trong ngoặc đơn để hoàn
+                            thành đoạn văn.</h2>
                     </div>
                     <div class="progress-badge" aria-live="polite">
                         <span>📝</span>
@@ -1360,32 +1421,38 @@
                     </div>
                 </div>
 
-                <div class="progress-track" role="progressbar" aria-label="Số ô đã hoàn thành" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0" id="progress-track">
+                <div class="progress-track" role="progressbar" aria-label="Số ô đã hoàn thành" aria-valuemin="0"
+                    aria-valuemax="5" aria-valuenow="0" id="progress-track">
                     <div class="progress-fill" id="progress-fill"></div>
                 </div>
 
                 <div class="story-box">
-                    <p class="story-text">Mưa mùa xuân xôn xao, phơi phới. Những hạt mưa <select id="answer-1" class="word-select" aria-label="Hộp 1: từ miêu tả hạt mưa">
+                    <p class="story-text">Mưa mùa xuân xôn xao, phơi phới. Những hạt mưa <select id="answer-1"
+                            class="word-select" aria-label="Hộp 1: từ miêu tả hạt mưa">
                             <option value="">-- Chọn từ --</option>
                             <option value="bé mọn">bé mọn</option>
                             <option value="bé con">bé con</option>
                             <option value="bé nhỏ">bé nhỏ</option>
-                        </select>, mềm mại, rơi như nhảy nhót. Hạt nọ tiếp hạt kia đan xuống mặt đất. Mặt đất đã <select id="answer-2" class="word-select" aria-label="Hộp 2: trạng thái mặt đất">
+                        </select>, mềm mại, rơi như nhảy nhót. Hạt nọ tiếp hạt kia đan xuống mặt đất. Mặt đất đã <select
+                            id="answer-2" class="word-select" aria-label="Hộp 2: trạng thái mặt đất">
                             <option value="">-- Chọn từ --</option>
                             <option value="khô cằn">khô cằn</option>
                             <option value="khô khan">khô khan</option>
                             <option value="khô khốc">khô khốc</option>
-                        </select> bỗng thức dậy, âu yếm đón lấy những giọt mưa ấm áp, <select id="answer-3" class="word-select" aria-label="Hộp 3: miêu tả giọt mưa">
+                        </select> bỗng thức dậy, âu yếm đón lấy những giọt mưa ấm áp, <select id="answer-3"
+                            class="word-select" aria-label="Hộp 3: miêu tả giọt mưa">
                             <option value="">-- Chọn từ --</option>
                             <option value="trong sáng">trong sáng</option>
                             <option value="trong lành">trong lành</option>
                             <option value="trong xanh">trong xanh</option>
-                        </select>. Mặt đất lại <select id="answer-4" class="word-select" aria-label="Hộp 4: trạng thái mặt đất sau mưa">
+                        </select>. Mặt đất lại <select id="answer-4" class="word-select"
+                            aria-label="Hộp 4: trạng thái mặt đất sau mưa">
                             <option value="">-- Chọn từ --</option>
                             <option value="dịu mềm">dịu mềm</option>
                             <option value="dịu nhẹ">dịu nhẹ</option>
                             <option value="dịu ngọt">dịu ngọt</option>
-                        </select>, lại cần mẫn tiếp nhựa sống cho cây cỏ. Mưa mùa xuân đã mang lại cho cây <select id="answer-5" class="word-select" aria-label="Hộp 5: điều mưa mang lại cho cây">
+                        </select>, lại cần mẫn tiếp nhựa sống cho cây cỏ. Mưa mùa xuân đã mang lại cho cây <select
+                            id="answer-5" class="word-select" aria-label="Hộp 5: điều mưa mang lại cho cây">
                             <option value="">-- Chọn từ --</option>
                             <option value="sức lực">sức lực</option>
                             <option value="sức vóc">sức vóc</option>
@@ -1409,7 +1476,8 @@
 
             <!-- ── Section 3: Results ── -->
             <section id="result-section" class="card result-section" aria-labelledby="result-heading">
-                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:4px;">
+                <div
+                    style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:4px;">
                     <h2 id="result-heading" class="result-heading">🏆 Kết quả của bạn</h2>
                     <span id="attempt-badge" class="attempt-badge">🌱 Lượt làm bài: 1</span>
                 </div>
@@ -1445,8 +1513,10 @@
                     <div class="teacher-login-inner">
                         <h3 class="info-title" style="font-size:18px; margin-bottom:16px;">🔐 Đăng nhập Giáo viên</h3>
                         <label for="teacher-pin" class="form-label">Nhập mã PIN:</label>
-                        <input id="teacher-pin" class="teacher-pin-input" type="password" maxlength="20" placeholder="••••••" autocomplete="off">
-                        <button id="teacher-login-btn" class="btn btn-primary" type="button" style="width:100%; margin-top:14px;">Đăng nhập</button>
+                        <input id="teacher-pin" class="teacher-pin-input" type="password" maxlength="20"
+                            placeholder="••••••" autocomplete="off">
+                        <button id="teacher-login-btn" class="btn btn-primary" type="button"
+                            style="width:100%; margin-top:14px;">Đăng nhập</button>
                         <p id="teacher-login-error" class="teacher-login-error" role="alert"></p>
                     </div>
                 </div>
@@ -1459,8 +1529,9 @@
                     <h3 class="teacher-section-title">📊 Tổng quan</h3>
                     <div class="stats-grid">
                         <div class="stat-card">
-                            <p class="stat-card-label">Tổng bài nộp</p>
+                            <p class="stat-card-label">Số học sinh đã làm</p>
                             <p class="stat-card-value" id="stat-total">0</p>
+                            <span id="stat-total-sub" style="font-size:12px; color:var(--ink-light); display:block; margin-top:4px;">(0 lượt nộp)</span>
                         </div>
                         <div class="stat-card">
                             <p class="stat-card-label">Điểm trung bình</p>
@@ -1480,7 +1551,8 @@
                 <!-- Student Submissions Table -->
                 <div class="card">
                     <h3 class="teacher-section-title">📋 Danh sách bài nộp</h3>
-                    <input id="search-students" class="search-input" type="text" placeholder="🔍 Tìm theo tên hoặc lớp...">
+                    <input id="search-students" class="search-input" type="text"
+                        placeholder="🔍 Tìm theo tên hoặc lớp...">
                     <div class="table-wrapper">
                         <table class="data-table" id="submissions-table">
                             <thead>
@@ -1541,7 +1613,8 @@
                 <!-- Export Buttons -->
                 <div class="card">
                     <h3 class="teacher-section-title">📥 Xuất dữ liệu</h3>
-                    <p style="font-size:14px; color:var(--ink-light); margin-bottom:14px;">Tải toàn bộ kết quả bài nộp về máy tính để tổng hợp.</p>
+                    <p style="font-size:14px; color:var(--ink-light); margin-bottom:14px;">Tải toàn bộ kết quả bài nộp
+                        về máy tính để tổng hợp.</p>
                     <div class="export-row">
                         <button id="export-csv" class="btn btn-outline" type="button">📄 Tải file CSV</button>
                         <button id="export-excel" class="btn btn-outline" type="button">📊 Tải file Excel</button>
@@ -1566,25 +1639,13 @@
                ══════════════════════════════════════════ */
 
             // ⚠️ GIÁO VIÊN: Dán URL Google Apps Script Web App vào đây (Bước 3)
-            const API_URL = '';
+            const API_URL = 'https://script.google.com/macros/s/AKfycbxkT8Mv5m_OEG38pLQJ_GJG7WhE4fDcmMgphgYcJ8J2ZJxdEI9XQz412TWpbPvepdd5-g/exec';
 
-            // Obfuscated answer & pedagogical guidance blob (XOR 0x5A + Base64)
-            // Ngăn chặn học sinh xem mã nguồn hoặc DevTools để tìm đáp án trần
-            const _DATA_BLOB = 'AVB6eiEzPmBrdjs0KWA4mfN6NDK74dV2MzQ+PyJgaXY2Ozg/NmAOu+HxejczmfAvei674Pl6Mrvg+y56N5zqO3YyMzQuYBK74Psuejec6jt6Ii+Z+DR6KLvg/y56NDK74dV6N7vh0TR2eje74ds3eje74Pszeiic+zN6NDKc6no0Mrvg+SN6NDKZ6S50eid2UHp6ITM+YGh2OzQpYDEyme56Obvg6zR2MzQ+PyJga3Y2Ozg/NmAOKLvg+zQ9ei4ymfszeje74O0uep7Lu+D/LnYyMzQuYBe74O0uep7Lu+D/LnopOy96N5njO3qey5nuND16Nrvg+zQyejEyme56NLvh8y56NLvg4XZ6MTI7NXoxMpn7Lnqey5zqu+H5OXqey5n7NDJ6LjK74fM5dHondlB6eiEzPmBpdjs0KWAuKDU0PXo2mfo0MnYzND4/ImBodjY7OD82YBczmfAvei674Pl6PTO74dcuejec6jt2MjM0LmAdM7vh1y56N5zqO3oiL5n4NHouKDU0PXouKLvg4TV2ejc7ND16Nrvg+zN6Kbvh63ouKDU0PXo2mfo0Mno5MjV6MTKZ7jQ9ej0zOzR0eid2UHp6ITM+YG52OzQpYD674dEveje74ds3djM0Pj8iYGt2Njs4PzZgDii74Ps0PXouMpn7M3opOy96N5zqO3YyMzQuYBe74O0uep7Lu+D/Lno0Pbvg/zd6N5zqO3oiL5n4NHouKLvhxXo0mfA0eje74ds3eje74PszdnounPszeiK74csqdno3mfoveje74ft0eid2UHp6ITM+YG92OzQpYCm74fM5eim74cs0PXYzND4/ImBpdjY7OD82YJ7KM7vh2y96N5zqO3o3OzQ9ejkyNXo5mfgjdjIzNC5gF5zqO3oiL5n4NHouM7vg5Sp6LjKZ8Dd6NDK74es7eim74cs0PXosmfp6ND0vu+HJNHopu+HzOXopu+HLND16LiiZ+jR6Lii74dt6OTI1ejmZ+CN6ObvhyzN0eidQBw==';
-
-            function getQuestionData() {
-                try {
-                    const binStr = atob(_DATA_BLOB);
-                    const bytes = new Uint8Array(binStr.length);
-                    for (let i = 0; i < binStr.length; i++) {
-                        bytes[i] = binStr.charCodeAt(i) ^ 0x5a;
-                    }
-                    return JSON.parse(new TextDecoder('utf-8').decode(bytes));
-                } catch (e) {
-                    console.error('Data decode error:', e);
-                    return [];
-                }
-            }
+            // ══════════════════════════════════════════
+            // 🔒 BẢO MẬT TUYỆT ĐỐI (SERVER-SIDE GRADING)
+            // ══════════════════════════════════════════
+            // Toàn bộ đáp án chuẩn được lưu trữ và chấm điểm bảo mật trên Google Apps Script (Server).
+            // Mã nguồn phía học sinh KHÔNG chứa bất kỳ đáp án nào, ngăn chặn 100% học sinh xem trộm (F12 / View Source).
 
             /* ══════════════════════════════════════════
                2. DOM REFERENCES
@@ -1792,12 +1853,14 @@
             function validateIdentity() {
                 const nameInput = $('student-name');
                 const classInput = $('student-class');
-                const name = nameInput.value.trim().replace(/\s+/g, ' ');
-                const studentClass = classInput.value.trim().replace(/\s+/g, ' ');
+                const rawName = nameInput.value.trim().replace(/\s+/g, ' ');
+                const name = rawName.toLocaleUpperCase('vi');
+                nameInput.value = name;
+                const studentClass = classInput.value.trim();
                 const msgEl = $('identity-message');
 
                 if (!name || !studentClass) {
-                    msgEl.textContent = 'Bạn hãy nhập họ và tên cùng lớp trước khi bắt đầu nhé!';
+                    msgEl.textContent = 'Bạn hãy nhập họ và tên và chọn lớp trước khi bắt đầu nhé!';
                     msgEl.classList.add('show');
                     if (!name) {
                         triggerShake(nameInput);
@@ -1814,68 +1877,42 @@
             }
 
             /* ══════════════════════════════════════════
-               7. SCORING & PEDAGOGICAL FEEDBACK (Step 2.3 & 2.4)
+               7. HIỂN THỊ KẾT QUẢ TỪ MÁY CHỦ (SERVER-SIDE GRADING)
                ══════════════════════════════════════════ */
-            function gradeAndReveal() {
-                const qData = getQuestionData();
-                let correct = 0;
-                const wrongItems = [];
-                const values = [];
+            function displayServerResults(serverResult) {
+                const { score, correct_count, wrong_count, accuracy_percent, encouragement, results } = serverResult;
 
-                selects.forEach((sel, i) => {
-                    const item = qData[i] || { index: 0, ans: '', label: '', hint: '' };
-                    const userVal = sel.value;
-                    values.push(userVal);
-
-                    // So khớp chính xác cả giá trị chuỗi NFC lẫn chỉ số vị trí
-                    const isRight = (sel.selectedIndex === item.index) || (normalize(userVal) === normalize(item.ans));
-
-                    if (isRight) {
-                        correct++;
-                        sel.classList.add('correct');
-                        sel.classList.remove('incorrect');
-                    } else {
-                        sel.classList.add('incorrect');
-                        sel.classList.remove('correct');
-                        wrongItems.push({
-                            qNum: i + 1,
-                            userVal: userVal || '(Chưa chọn)',
-                            correctVal: item.ans,
-                            hint: item.hint
-                        });
-                    }
-                    sel.disabled = true;
-                });
-
-                const wrong = 5 - correct;
-                const score = correct * 2;
-                const accuracy = correct * 20;
+                // Tô màu các ô dropdown theo kết quả chấm từ máy chủ
+                if (results && Array.isArray(results)) {
+                    results.forEach((item, i) => {
+                        const sel = selects[i];
+                        if (!sel) return;
+                        if (item.isCorrect) {
+                            sel.classList.add('correct');
+                            sel.classList.remove('incorrect');
+                        } else {
+                            sel.classList.add('incorrect');
+                            sel.classList.remove('correct');
+                        }
+                        sel.disabled = true;
+                    });
+                } else {
+                    selects.forEach(sel => sel.disabled = true);
+                }
 
                 // Cập nhật các thẻ kết quả
-                $('correct-result').textContent = correct;
-                $('wrong-result').textContent = wrong;
+                $('correct-result').textContent = correct_count;
+                $('wrong-result').textContent = wrong_count;
                 $('score-result').textContent = `${score}/10`;
-                $('accuracy-result').textContent = `${accuracy}%`;
+                $('accuracy-result').textContent = `${accuracy_percent}%`;
                 $('attempt-badge').textContent = `🌱 Lượt làm bài: ${STATE.attemptNumber}`;
-
-                // Lời động viên chuẩn theo kế hoạch (Bước 2.4)
-                let encouragement = '';
-                if (correct === 5) {
-                    encouragement = '🎉 Tuyệt vời! Bạn là nhà thám hiểm ngôn từ xuất sắc!';
-                } else if (correct === 4) {
-                    encouragement = '👏 Giỏi lắm! Bạn gần hoàn hảo rồi!';
-                } else if (correct === 3) {
-                    encouragement = '😊 Bạn đã tiến bộ rồi! Hãy xem lại những từ còn nhầm nhé.';
-                } else if (correct >= 1) {
-                    encouragement = '💪 Cố gắng thêm một chút nhé! Bạn sẽ làm tốt hơn.';
-                } else {
-                    encouragement = '🌱 Đừng nản nhé! Hãy đọc lại đoạn văn và thử lại lần nữa.';
-                }
                 $('encouragement').textContent = encouragement;
 
-                // Hiển thị phản hồi sư phạm chi tiết
+                // Hiển thị phản hồi sư phạm chi tiết (do máy chủ trả về)
                 const feedbackEl = $('answer-feedback');
-                if (correct === 5) {
+                const wrongItems = results ? results.filter(r => !r.isCorrect) : [];
+
+                if (correct_count === 5) {
                     feedbackEl.innerHTML = `
                         <div class="feedback-item perfect-item">
                             🌟 <strong>Hoàn hảo!</strong> Bạn đã chọn chính xác cả 5 từ ngữ miêu tả mưa mùa xuân. Toàn bộ đoạn văn đã được giải mã trọn vẹn và tràn đầy cảm xúc!
@@ -1890,9 +1927,9 @@
                     wrongItems.forEach(item => {
                         html += `
                             <div class="feedback-item">
-                                <span class="badge-q">Ô ${item.qNum}</span>
-                                Bạn chọn: <span class="user-val">${escapeHtml(item.userVal)}</span>
-                                &nbsp;→&nbsp; Từ đúng là: <span class="correct-val">"${escapeHtml(item.correctVal)}"</span>
+                                <span class="badge-q">Ô ${item.q}</span>
+                                Bạn chọn: <span class="user-val">${escapeHtml(item.userWord || '(Chưa chọn)')}</span>
+                                &nbsp;→&nbsp; Từ đúng là: <span class="correct-val">"${escapeHtml(item.correctWord)}"</span>
                                 <span class="hint-text">💡 ${escapeHtml(item.hint)}</span>
                             </div>
                         `;
@@ -1910,7 +1947,7 @@
                 $('check-button').disabled = true;
                 $('submit-button').disabled = true;
                 $('student-name').readOnly = true;
-                $('student-class').readOnly = true;
+                $('student-class').disabled = true;
 
                 // Hiển thị phần kết quả
                 const resultSection = $('result-section');
@@ -1918,17 +1955,15 @@
                 resultSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
                 // Âm thanh & hiệu ứng hình ảnh
-                if (correct === 5) {
+                if (correct_count === 5) {
                     playVictoryChime();
                     playApplause();
                     createConfetti();
-                } else if (correct >= 3) {
+                } else if (correct_count >= 3) {
                     playVictoryChime();
                 } else {
                     playSoftFail();
                 }
-
-                return { correct, wrong, score, accuracy, values };
             }
 
             function escapeHtml(text) {
@@ -1974,7 +2009,7 @@
                 $('check-button').disabled = false;
                 $('submit-button').disabled = false;
                 $('student-name').readOnly = false;
-                $('student-class').readOnly = false;
+                $('student-class').disabled = false;
 
                 updateProgress();
                 setStatus(`Bắt đầu lượt làm bài thứ ${STATE.attemptNumber}! Hãy đọc kỹ đoạn văn và tự tin chinh phục nhé! 🌟`);
@@ -1998,20 +2033,29 @@
                 }
 
                 if (!API_URL) {
-                    return { success: false, reason: 'no_api' };
+                    return { success: false, error: 'Chưa cấu hình API URL Google Apps Script.' };
                 }
 
                 try {
-                    await fetch(API_URL, {
+                    // Gửi request POST tới Google Apps Script (không đặt Content-Type: application/json để tránh CORS preflight bị chặn)
+                    const res = await fetch(API_URL, {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(record),
-                        mode: 'no-cors'
+                        body: JSON.stringify(record)
                     });
-                    return { success: true };
+                    const data = await res.json();
+                    if (data && data.attempt_number) {
+                        try {
+                            const localData = JSON.parse(localStorage.getItem('ntt_submissions') || '[]');
+                            if (localData.length > 0) {
+                                localData[localData.length - 1].attempt_number = data.attempt_number;
+                                localStorage.setItem('ntt_submissions', JSON.stringify(localData));
+                            }
+                        } catch (e) { }
+                    }
+                    return data;
                 } catch (err) {
                     console.error('Submit network error:', err);
-                    return { success: false, reason: 'network' };
+                    return { success: false, error: 'Lỗi kết nối máy chủ Google Sheets: ' + err.message };
                 }
             }
 
@@ -2033,6 +2077,15 @@
                 }
             });
 
+            // ── Tự động viết hoa tên học sinh khi nhập ──
+            $('student-name').addEventListener('input', function () {
+                const pos = this.selectionStart;
+                this.value = this.value.toLocaleUpperCase('vi');
+                if (pos !== null) {
+                    this.setSelectionRange(pos, pos);
+                }
+            });
+
             // ── Bắt đầu làm bài ──
             $('identity-form').addEventListener('submit', e => {
                 e.preventDefault();
@@ -2040,10 +2093,25 @@
                 const identity = validateIdentity();
                 if (!identity) return;
 
+                // Kiểm tra lịch sử làm bài để xác định lượt làm bài của học sinh này
+                const localData = JSON.parse(localStorage.getItem('ntt_submissions') || '[]');
+                const prevAttempts = localData.filter(s =>
+                    (s.student_name || '').trim().replace(/\s+/g, ' ').toUpperCase() === identity.name &&
+                    (s.student_class || '').trim() === identity.studentClass
+                ).length;
+
+                STATE.attemptNumber = prevAttempts + 1;
+                $('attempt-badge').textContent = `🌱 Lượt làm bài: ${STATE.attemptNumber}`;
+
                 STATE.started = true;
                 $('exercise-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
                 selects[0].focus({ preventScroll: true });
-                setStatus('Sẵn sàng khám phá! Hãy đọc kỹ và chọn đủ cả 5 từ nhé. 🌟');
+
+                if (prevAttempts > 0) {
+                    setStatus(`Chào mừng ${identity.name}! Bạn đã làm bài ${prevAttempts} lần trước đó. Đây là lượt làm bài thứ ${STATE.attemptNumber} của bạn! 🌟`);
+                } else {
+                    setStatus('Sẵn sàng khám phá! Hãy đọc kỹ và chọn đủ cả 5 từ nhé. 🌟');
+                }
                 playWelcomeJingle();
             });
 
@@ -2117,39 +2185,43 @@
 
                 STATE.pending = true;
                 $('submit-button').disabled = true;
-                setStatus('Đang chấm điểm bài làm của bạn...');
+                setStatus('Đang gửi bài và chấm điểm từ máy chủ Google Sheets...');
                 playClick();
 
-                // Chấm điểm và hiển thị kết quả
-                const result = gradeAndReveal();
-                STATE.submitted = true;
-
-                // Tạo đối tượng dữ liệu lưu trữ
+                // Thu thập 5 đáp án của học sinh
+                const studentAnswers = selects.map(s => s.value);
                 const record = {
+                    action: 'submit',
                     student_name: identity.name,
                     student_class: identity.studentClass,
                     submitted_at: new Date().toISOString(),
-                    answer_1: result.values[0],
-                    answer_2: result.values[1],
-                    answer_3: result.values[2],
-                    answer_4: result.values[3],
-                    answer_5: result.values[4],
-                    correct_count: result.correct,
-                    wrong_count: result.wrong,
-                    score: result.score,
-                    accuracy_percent: result.accuracy,
+                    answers: studentAnswers,
+                    answer_1: studentAnswers[0],
+                    answer_2: studentAnswers[1],
+                    answer_3: studentAnswers[2],
+                    answer_4: studentAnswers[3],
+                    answer_5: studentAnswers[4],
                     attempt_number: STATE.attemptNumber
                 };
 
-                // Gửi dữ liệu và xử lý phản hồi
+                // Gửi lên Google Apps Script chấm điểm bảo mật
                 const serverResult = await submitToServer(record);
 
-                if (serverResult.success) {
-                    setStatus('✅ Đã nộp bài thành công! Kết quả đã được lưu trữ.');
-                } else if (serverResult.reason === 'no_api') {
-                    setStatus('✅ Đã chấm bài xong và lưu trữ trên trình duyệt! (Giáo viên sẽ kết nối Google Sheets ở Bước 3).');
+                if (serverResult.success && serverResult.results) {
+                    STATE.submitted = true;
+                    if (serverResult.attempt_number) {
+                        STATE.attemptNumber = serverResult.attempt_number;
+                    }
+                    displayServerResults(serverResult);
+                    setStatus('✅ Đã nộp bài và nhận kết quả chấm điểm thành công!');
+                } else if (serverResult.success && serverResult.score === undefined) {
+                    // Script Apps Script bản cũ chưa cập nhật
+                    setStatus('✅ Đã gửi bài lên Google Sheets! (Vui lòng dán file Code.gs mới vào Apps Script để kích hoạt chấm điểm tự động từ xa nhé).');
+                    $('submit-button').disabled = false;
                 } else {
-                    setStatus('⚠️ Đã chấm bài! Do kết nối mạng gián đoạn, kết quả đã được lưu tạm vào máy.', true);
+                    $('submit-button').disabled = false;
+                    setStatus('⚠️ ' + (serverResult.error || 'Chưa gửi được bài lên hệ thống. Vui lòng kiểm tra lại kết nối mạng.'), true);
+                    playSoftFail();
                 }
 
                 STATE.pending = false;
@@ -2172,35 +2244,55 @@
                 }
             });
 
-            $('teacher-login-btn').addEventListener('click', () => {
+            $('teacher-login-btn').addEventListener('click', async () => {
                 const pin = $('teacher-pin').value.trim();
                 if (!pin) {
                     $('teacher-login-error').textContent = 'Vui lòng nhập mã PIN.';
                     $('teacher-login-error').classList.add('show');
+                    $('teacher-login-error').style.color = 'var(--red-text)';
                     return;
                 }
 
-                // Hiển thị thông báo trạng thái
+                // Nếu chưa có API_URL: cho phép xem dữ liệu cục bộ bằng mã PIN mặc định
                 if (!API_URL) {
-                    // Xem dữ liệu lưu cục bộ
                     try {
                         const localSubmissions = JSON.parse(localStorage.getItem('ntt_submissions') || '[]');
-                        if (pin === '123456') { // Mã PIN mặc định
+                        if (pin === '123456') { // PIN mặc định khi test offline
                             $('teacher-login-error').classList.remove('show');
                             $('teacher-login-box').classList.remove('show');
                             $('teacher-dashboard').classList.add('show');
                             renderLocalTeacherDashboard(localSubmissions);
                             return;
                         }
-                    } catch (e) {}
-                    $('teacher-login-error').textContent = 'Mã PIN chưa đúng hoặc giáo viên chưa cấu hình Google Sheets (Bước 3).';
+                    } catch (e) { }
+                    $('teacher-login-error').textContent = 'Mã PIN chưa đúng (mặc định offline: 123456) hoặc chưa cấu hình API URL (Bước 3).';
                     $('teacher-login-error').classList.add('show');
+                    $('teacher-login-error').style.color = 'var(--red-text)';
                     return;
                 }
 
+                // Khi đã có API_URL: kết nối xác thực từ xa với Google Apps Script
                 $('teacher-login-error').textContent = 'Đang kết nối hệ thống Google Sheets...';
                 $('teacher-login-error').classList.add('show');
                 $('teacher-login-error').style.color = 'var(--ink-light)';
+
+                try {
+                    const response = await fetch(`${API_URL}?action=getStats&pin=${encodeURIComponent(pin)}`);
+                    const data = await response.json();
+                    if (!data.success) {
+                        $('teacher-login-error').textContent = data.error || 'Mã PIN không chính xác.';
+                        $('teacher-login-error').style.color = 'var(--red-text)';
+                        return;
+                    }
+
+                    $('teacher-login-error').classList.remove('show');
+                    $('teacher-login-box').classList.remove('show');
+                    $('teacher-dashboard').classList.add('show');
+                    renderTeacherDashboardData(data.submissions || [], data.stats || {});
+                } catch (err) {
+                    $('teacher-login-error').textContent = 'Lỗi kết nối tới Google Sheets: ' + err.message;
+                    $('teacher-login-error').style.color = 'var(--red-text)';
+                }
             });
 
             $('teacher-pin').addEventListener('keydown', e => {
@@ -2211,23 +2303,121 @@
             });
 
             function renderLocalTeacherDashboard(data) {
-                $('stat-total').textContent = data.length;
-                if (!data.length) return;
-                const totalScore = data.reduce((sum, item) => sum + (item.score || 0), 0);
-                const avgScore = (totalScore / data.length).toFixed(1);
+                // Tính toán thống kê offline
+                const totalSubmissions = data.length;
+                if (!totalSubmissions) {
+                    $('stat-total').textContent = 0;
+                    if ($('stat-total-sub')) $('stat-total-sub').textContent = '(0 lượt nộp)';
+                    renderSubmissionsTable([]);
+                    return;
+                }
+
+                // Nhóm theo học sinh duy nhất (Tên in hoa + Lớp) để KHÔNG tính lặp học sinh mới
+                const studentMap = {};
+                data.forEach(d => {
+                    const normName = (d.student_name || '').trim().replace(/\s+/g, ' ').toUpperCase();
+                    const normClass = (d.student_class || '').trim().toUpperCase();
+                    const key = normName + '___' + normClass;
+                    if (!studentMap[key]) {
+                        studentMap[key] = {
+                            name: normName,
+                            studentClass: normClass,
+                            bestScore: 0,
+                            attempts: 0
+                        };
+                    }
+                    studentMap[key].attempts++;
+                    const sScore = Number(d.score) || 0;
+                    if (sScore > studentMap[key].bestScore) {
+                        studentMap[key].bestScore = sScore;
+                    }
+                });
+
+                const uniqueStudents = Object.values(studentMap);
+                const totalStudents = uniqueStudents.length;
+
+                $('stat-total').textContent = totalStudents;
+                if ($('stat-total-sub')) {
+                    $('stat-total-sub').textContent = `(Tổng ${totalSubmissions} lượt nộp)`;
+                }
+
+                const totalBestScore = uniqueStudents.reduce((sum, item) => sum + item.bestScore, 0);
+                const avgScore = totalStudents > 0 ? (totalBestScore / totalStudents).toFixed(1) : 0;
                 $('stat-avg').textContent = `${avgScore}/10`;
-                const avgAcc = ((totalScore / (data.length * 10)) * 100).toFixed(0);
+                const avgAcc = totalStudents > 0 ? ((totalBestScore / (totalStudents * 10)) * 100).toFixed(0) : 0;
                 $('stat-accuracy').textContent = `${avgAcc}%`;
-                const perfect = data.filter(d => d.score === 10).length;
+                const perfect = uniqueStudents.filter(d => d.bestScore === 10).length;
                 $('stat-perfect').textContent = perfect;
 
                 // Danh sách bài nộp
+                renderSubmissionsTable(data);
+
+                // Thống kê câu hỏi offline
+                const standardAnswers = ['bé nhỏ', 'khô cằn', 'trong lành', 'dịu mềm', 'sức sống'];
+                const questionLabels = [
+                    'Từ miêu tả hạt mưa',
+                    'Trạng thái mặt đất',
+                    'Miêu tả giọt mưa',
+                    'Trạng thái sau mưa',
+                    'Điều mưa mang cho cây'
+                ];
+                const qStats = standardAnswers.map((ans, idx) => {
+                    let correct = 0;
+                    data.forEach(d => {
+                        const val = (d['answer_' + (idx + 1)] || '').trim().toLowerCase();
+                        if (val === ans) correct++;
+                    });
+                    const cRate = totalSubmissions > 0 ? Math.round((correct / totalSubmissions) * 100) : 0;
+                    return {
+                        questionNum: idx + 1,
+                        label: questionLabels[idx],
+                        correctAnswer: ans,
+                        correctCount: correct,
+                        wrongCount: totalSubmissions - correct,
+                        correctRate: cRate,
+                        wrongRate: 100 - cRate
+                    };
+                });
+                renderQuestionStatsAndChart(qStats);
+            }
+
+            function renderTeacherDashboardData(submissions, stats) {
+                const totalStudents = stats.totalStudents !== undefined ? stats.totalStudents : (stats.total || submissions.length);
+                const totalSubmissions = stats.totalSubmissions !== undefined ? stats.totalSubmissions : submissions.length;
+                $('stat-total').textContent = totalStudents;
+                if ($('stat-total-sub')) {
+                    $('stat-total-sub').textContent = `(Tổng ${totalSubmissions} lượt nộp)`;
+                }
+                $('stat-avg').textContent = stats.avgScore !== undefined ? `${stats.avgScore}/10` : '–';
+                $('stat-accuracy').textContent = stats.avgAccuracy !== undefined ? `${stats.avgAccuracy}%` : '–';
+                $('stat-perfect').textContent = stats.perfectCount !== undefined ? stats.perfectCount : 0;
+
+                renderSubmissionsTable(submissions);
+                if (stats.questionStats) {
+                    renderQuestionStatsAndChart(stats.questionStats);
+                }
+            }
+
+            let currentDashboardSubmissions = [];
+
+            function renderSubmissionsTable(data) {
+                currentDashboardSubmissions = data || [];
+                renderFilteredSubmissions(currentDashboardSubmissions);
+            }
+
+            function renderFilteredSubmissions(data) {
                 const tbody = $('submissions-body');
                 tbody.innerHTML = '';
-                $('no-submissions').style.display = 'none';
+                const noMsg = $('no-submissions');
+                if (!data || !data.length) {
+                    if (noMsg) noMsg.style.display = 'block';
+                    return;
+                }
+                if (noMsg) noMsg.style.display = 'none';
+
                 data.forEach((d, idx) => {
                     const row = document.createElement('tr');
-                    const time = d.submitted_at ? new Date(d.submitted_at).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }) : '–';
+                    const time = d.submitted_at ? new Date(d.submitted_at).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit' }) : '–';
                     row.innerHTML = `
                         <td>${idx + 1}</td>
                         <td><strong>${escapeHtml(d.student_name)}</strong></td>
@@ -2242,9 +2432,62 @@
                         <td style="color:var(--red-text); font-weight:700;">${d.wrong_count}</td>
                         <td><strong>${d.score}/10</strong></td>
                         <td>${d.accuracy_percent}%</td>
-                        <td>${d.attempt_number || 1}</td>
+                        <td><span class="attempt-pill">Lượt ${d.attempt_number || 1}</span></td>
                     `;
                     tbody.appendChild(row);
+                });
+            }
+
+            $('search-students').addEventListener('input', e => {
+                const term = e.target.value.trim().toLowerCase();
+                if (!term) {
+                    renderFilteredSubmissions(currentDashboardSubmissions);
+                } else {
+                    const filtered = currentDashboardSubmissions.filter(d =>
+                        (d.student_name || '').toLowerCase().includes(term) ||
+                        (d.student_class || '').toLowerCase().includes(term)
+                    );
+                    renderFilteredSubmissions(filtered);
+                }
+            });
+
+            function renderQuestionStatsAndChart(qStats) {
+                const tbody = $('question-stats-body');
+                const chartEl = $('accuracy-chart');
+                if (tbody) tbody.innerHTML = '';
+                if (chartEl) chartEl.innerHTML = '';
+
+                if (!qStats || !qStats.length) return;
+
+                qStats.forEach(q => {
+                    if (tbody) {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td><strong>Câu ${q.questionNum}</strong></td>
+                            <td>${escapeHtml(q.label)}</td>
+                            <td><strong style="color:var(--green-badge)">${escapeHtml(q.correctAnswer)}</strong></td>
+                            <td style="color:var(--green-badge); font-weight:700;">${q.correctCount}</td>
+                            <td style="color:var(--red-text); font-weight:700;">${q.wrongCount}</td>
+                            <td><strong>${q.correctRate}%</strong></td>
+                            <td style="color:var(--red-text)">${q.wrongRate}%</td>
+                        `;
+                        tbody.appendChild(tr);
+                    }
+
+                    if (chartEl) {
+                        const barRow = document.createElement('div');
+                        barRow.style.marginBottom = '12px';
+                        barRow.innerHTML = `
+                            <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:700; margin-bottom:5px;">
+                                <span>Câu ${q.questionNum}: ${escapeHtml(q.label)}</span>
+                                <span style="color:var(--green-badge)">${q.correctRate}% đúng</span>
+                            </div>
+                            <div style="height:12px; background:#ffd9d7; border-radius:6px; overflow:hidden; display:flex;">
+                                <div style="width:${q.correctRate}%; background:var(--green); border-radius:6px 0 0 6px; transition:width 0.5s ease;"></div>
+                            </div>
+                        `;
+                        chartEl.appendChild(barRow);
+                    }
                 });
             }
 
