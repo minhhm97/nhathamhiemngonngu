@@ -1,0 +1,2298 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nhà Thám Hiểm Ngôn Từ – Giải Mã Mưa Mùa Xuân</title>
+    <meta name="description" content="Trò chơi giáo dục tương tác cho học sinh lớp 5: Chọn từ thích hợp để hoàn thành đoạn văn Mưa mùa xuân.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,800&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================
+           1. CSS CUSTOM PROPERTIES
+           ============================================ */
+        :root {
+            --sky-top: #a0dff7;
+            --sky-mid: #d0f0fc;
+            --sky-bot: #e2f5dc;
+            --cream: #fffdf4;
+            --ink: #174564;
+            --ink-light: #476579;
+            --blue: #087ba8;
+            --blue-dark: #066183;
+            --green: #368963;
+            --green-light: #e7f8ee;
+            --green-badge: #277255;
+            --orange: #ef8a4b;
+            --orange-dark: #cf6c32;
+            --red: #d45957;
+            --red-bg: #ffebea;
+            --red-text: #a02e2d;
+            --teal-bg: #e7fbfa;
+            --teal-border: #69c7c8;
+            --border-light: #b8dce2;
+            --focus-ring: rgba(132, 219, 237, 0.5);
+            --correct-bg: #def8e8;
+            --correct-border: #158653;
+            --correct-text: #126039;
+            --incorrect-bg: #ffebea;
+            --incorrect-border: #d45957;
+            --incorrect-text: #a02e2d;
+            --radius-lg: 28px;
+            --radius-md: 15px;
+            --radius-sm: 14px;
+            --shadow-card: 0 20px 60px rgba(39, 118, 139, 0.12), 0 4px 0 #d3e6d3;
+            --font-ui: 'Quicksand', 'Segoe UI', sans-serif;
+            --font-story: 'Fraunces', Georgia, serif;
+        }
+
+        /* ============================================
+           2. RESET & BASE
+           ============================================ */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: var(--font-ui);
+            color: var(--ink);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        button,
+        select,
+        input {
+            font-family: inherit;
+            font-size: inherit;
+            border: none;
+            outline: none;
+            background: none;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        /* ============================================
+           3. BACKGROUND SCENE
+           ============================================ */
+        .world {
+            position: relative;
+            min-height: 100vh;
+            background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 45%, var(--sky-bot) 100%);
+            overflow: hidden;
+        }
+
+        /* Sun glow */
+        .sun-glow {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            right: -140px;
+            top: -160px;
+            background: radial-gradient(circle, #fff8c6 0%, rgba(255, 248, 198, 0.3) 50%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Clouds */
+        .cloud {
+            position: fixed;
+            z-index: 0;
+            background: white;
+            border-radius: 100px;
+            opacity: 0.82;
+            filter: drop-shadow(0 8px 6px rgba(105, 183, 211, 0.12));
+            animation: drift 12s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        .cloud::before,
+        .cloud::after {
+            content: "";
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .cloud::before {
+            width: 58%;
+            height: 150%;
+            left: 16%;
+            bottom: 8%;
+        }
+
+        .cloud::after {
+            width: 44%;
+            height: 120%;
+            right: 9%;
+            bottom: 4%;
+        }
+
+        .cloud-1 {
+            width: 140px;
+            height: 38px;
+            top: 60px;
+            left: 5%;
+        }
+
+        .cloud-2 {
+            width: 100px;
+            height: 28px;
+            top: 160px;
+            right: 8%;
+            animation-delay: -5s;
+            animation-duration: 15s;
+        }
+
+        .cloud-3 {
+            width: 110px;
+            height: 32px;
+            top: 280px;
+            left: 55%;
+            opacity: 0.55;
+            animation-delay: -8s;
+            animation-duration: 18s;
+        }
+
+        @keyframes drift {
+            to {
+                transform: translateX(30px);
+            }
+        }
+
+        /* Rain drops */
+        .rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .drop {
+            position: absolute;
+            top: -20px;
+            width: 2px;
+            height: 16px;
+            background: linear-gradient(transparent, rgba(100, 195, 235, 0.5));
+            border-radius: 0 0 2px 2px;
+            animation: fall var(--d, 1s) var(--dl, 0s) linear infinite;
+            left: calc(var(--x, 50) * 1%);
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(calc(100vh + 40px));
+            }
+        }
+
+        /* Hills */
+        .hill {
+            position: fixed;
+            bottom: 0;
+            border-radius: 50% 50% 0 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .hill-back {
+            left: -15%;
+            width: 130%;
+            height: 180px;
+            background: #b8e49a;
+            opacity: 0.35;
+        }
+
+        .hill-front {
+            left: -10%;
+            width: 120%;
+            height: 130px;
+            background: #a6d887;
+            opacity: 0.45;
+        }
+
+        /* ============================================
+           4. MAIN CONTENT CONTAINER
+           ============================================ */
+        .main-container {
+            position: relative;
+            z-index: 10;
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 20px 16px 60px;
+        }
+
+        /* ============================================
+           5. CARDS / SHEETS
+           ============================================ */
+        .card {
+            background: var(--cream);
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            box-shadow: var(--shadow-card);
+            border-radius: var(--radius-lg);
+            padding: 28px 24px;
+            margin-bottom: 20px;
+            animation: reveal 0.6s ease both;
+        }
+
+        .card:nth-child(2) {
+            animation-delay: 0.08s;
+        }
+
+        .card:nth-child(3) {
+            animation-delay: 0.16s;
+        }
+
+        @keyframes reveal {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ============================================
+           6. HEADER
+           ============================================ */
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 24px;
+            animation: reveal 0.6s ease both;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            min-width: 0;
+        }
+
+        .eyebrow {
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            font-weight: 700;
+            font-size: 11px;
+            color: var(--blue);
+            margin-bottom: 4px;
+        }
+
+        .game-title {
+            font-family: var(--font-story);
+            font-size: clamp(26px, 5vw, 48px);
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            color: var(--ink);
+            max-width: 500px;
+        }
+
+        .game-subtitle {
+            font-size: clamp(13px, 2vw, 16px);
+            color: var(--ink-light);
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        /* Raindrop mascot */
+        .mascot {
+            width: 80px;
+            height: 100px;
+            flex-shrink: 0;
+            filter: drop-shadow(0 10px 8px rgba(45, 159, 201, 0.2));
+            animation: bob 3s ease-in-out infinite;
+        }
+
+        @keyframes bob {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-10px) rotate(4deg);
+            }
+        }
+
+        /* Sound toggle */
+        .sound-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 16px;
+            border: 2px solid var(--border-light);
+            border-radius: 50px;
+            background: white;
+            color: var(--ink);
+            font-weight: 700;
+            font-size: 13px;
+            transition: all 0.2s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .sound-btn:hover {
+            border-color: var(--blue);
+            background: #f0faff;
+        }
+
+        .sound-btn .icon {
+            font-size: 18px;
+        }
+
+        /* ============================================
+           7. INFO SECTION (Name, Class, Start)
+           ============================================ */
+        .info-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .info-icon {
+            flex-shrink: 0;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #e1f6ff;
+            border-radius: 14px;
+            font-size: 20px;
+        }
+
+        .info-title {
+            font-family: var(--font-story);
+            font-size: clamp(18px, 3vw, 24px);
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .info-desc {
+            margin-top: 6px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--ink-light);
+        }
+
+        .form-grid {
+            display: grid;
+            gap: 14px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 6px;
+            color: var(--ink);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: white;
+            border: 2px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            font-size: 15px;
+            color: var(--ink);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-input:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 4px var(--focus-ring);
+        }
+
+        .form-input::placeholder {
+            color: #9cb8c6;
+        }
+
+        .form-message {
+            margin-top: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--red-text);
+            display: none;
+        }
+
+        .form-message.show {
+            display: block;
+        }
+
+        /* ============================================
+           8. BUTTONS
+           ============================================ */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 13px 22px;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            font-size: 15px;
+            min-height: 48px;
+            transition: transform 0.15s, filter 0.15s, box-shadow 0.15s;
+            white-space: nowrap;
+        }
+
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            filter: brightness(1.04);
+        }
+
+        .btn:active:not(:disabled) {
+            transform: translateY(1px);
+        }
+
+        .btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+
+        .btn:focus-visible {
+            outline: 3px solid #e58a36;
+            outline-offset: 3px;
+        }
+
+        .btn-primary {
+            background: var(--blue);
+            color: white;
+            box-shadow: 0 5px 0 var(--blue-dark);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            box-shadow: 0 7px 0 var(--blue-dark);
+        }
+
+        .btn-submit {
+            background: var(--orange);
+            color: #3b3029;
+            box-shadow: 0 5px 0 var(--orange-dark);
+        }
+
+        .btn-submit:hover:not(:disabled) {
+            box-shadow: 0 7px 0 var(--orange-dark);
+        }
+
+        .btn-outline {
+            background: white;
+            color: var(--ink);
+            border: 2px solid var(--border-light);
+        }
+
+        .btn-outline:hover:not(:disabled) {
+            border-color: var(--blue);
+            background: #f5fbff;
+        }
+
+        .btn-check {
+            background: var(--teal-bg);
+            color: #116073;
+            border: 2px solid var(--teal-border);
+        }
+
+        .btn-check:hover:not(:disabled) {
+            background: #d5f7f5;
+        }
+
+        .btn-icon {
+            font-size: 16px;
+        }
+
+        /* ============================================
+           9. EXERCISE SECTION
+           ============================================ */
+        .exercise-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .exercise-kicker {
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-weight: 700;
+            font-size: 11px;
+            color: var(--green-badge);
+            margin-bottom: 4px;
+        }
+
+        .exercise-title {
+            font-family: var(--font-story);
+            font-size: clamp(16px, 2.5vw, 21px);
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .progress-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--green-light);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--green-badge);
+            white-space: nowrap;
+        }
+
+        /* Progress bar */
+        .progress-track {
+            height: 10px;
+            background: #deeced;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #3bb897, #4fcfb0);
+            border-radius: 10px;
+            transition: width 0.4s ease;
+        }
+
+        /* Story / Passage */
+        .story-box {
+            background: #fffef9;
+            border: 1px solid #e1e9d8;
+            border-radius: 20px;
+            padding: 24px 20px;
+        }
+
+        .story-text {
+            font-family: var(--font-story);
+            font-size: clamp(17px, 2.2vw, 22px);
+            line-height: 2.3;
+            color: #24435a;
+        }
+
+        .story-source {
+            margin-top: 16px;
+            text-align: right;
+            font-style: italic;
+            font-size: 14px;
+            color: #637c76;
+        }
+
+        /* ============================================
+           10. DROPDOWN SELECT
+           ============================================ */
+        .word-select {
+            display: inline-block;
+            max-width: 100%;
+            min-width: 150px;
+            padding: 7px 32px 7px 12px;
+            margin: 2px 3px;
+            vertical-align: baseline;
+            font-family: var(--font-ui);
+            font-size: 0.88em;
+            font-weight: 700;
+            color: var(--ink);
+            background: white;
+            border: 2px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%23087ba8' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+        }
+
+        .word-select:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 4px var(--focus-ring);
+        }
+
+        .word-select:hover:not(:disabled) {
+            border-color: var(--blue);
+        }
+
+        .word-select.correct {
+            border-color: var(--correct-border) !important;
+            background-color: var(--correct-bg) !important;
+            color: var(--correct-text) !important;
+        }
+
+        .word-select.incorrect {
+            border-color: var(--incorrect-border) !important;
+            background-color: var(--incorrect-bg) !important;
+            color: var(--incorrect-text) !important;
+        }
+
+        .word-select:disabled {
+            opacity: 1;
+            cursor: default;
+        }
+
+        /* ============================================
+           11. ACTION BUTTONS ROW
+           ============================================ */
+        .action-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 24px;
+        }
+
+        /* ============================================
+           12. FEEDBACK & STATUS
+           ============================================ */
+        .feedback-box {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 20px;
+            background: #fff8f5;
+            border: 2px solid #ffd8cc;
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--ink);
+            display: none;
+            animation: reveal 0.4s ease;
+        }
+
+        .feedback-box.show {
+            display: block;
+        }
+
+        .feedback-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #a02e2d;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .feedback-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .feedback-item {
+            background: white;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border-left: 4px solid var(--orange);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .feedback-item.perfect-item {
+            border-left-color: var(--green);
+            background: #f0fbf5;
+            color: #126039;
+            font-weight: 600;
+        }
+
+        .feedback-item .badge-q {
+            display: inline-block;
+            background: #ffe3d3;
+            color: #af430f;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-size: 12px;
+            margin-right: 6px;
+        }
+
+        .feedback-item .user-val {
+            color: var(--red-text);
+            text-decoration: line-through;
+            font-weight: 600;
+        }
+
+        .feedback-item .correct-val {
+            color: var(--green-badge);
+            font-weight: 700;
+        }
+
+        .feedback-item .hint-text {
+            display: block;
+            margin-top: 5px;
+            font-size: 13px;
+            color: var(--ink-light);
+            font-style: italic;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+
+        .shake {
+            animation: shake 0.45s ease-in-out !important;
+            border-color: var(--red) !important;
+            box-shadow: 0 0 0 4px rgba(212, 89, 87, 0.3) !important;
+        }
+
+        .attempt-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            background: #eef7ff;
+            border: 1px solid #bfe0fb;
+            color: #0b6792;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .status-text {
+            margin-top: 16px;
+            min-height: 24px;
+            font-weight: 700;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .status-text.error {
+            color: var(--red-text);
+        }
+
+        .status-text.success {
+            color: var(--green-badge);
+        }
+
+        /* ============================================
+           13. RESULT SECTION
+           ============================================ */
+        .result-section {
+            display: none;
+        }
+
+        .result-section.show {
+            display: block;
+        }
+
+        .result-heading {
+            font-family: var(--font-story);
+            font-size: clamp(20px, 3vw, 28px);
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .encouragement {
+            margin-top: 8px;
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--green-badge);
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .result-card {
+            padding: 18px;
+            border-radius: 18px;
+        }
+
+        .result-card-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--ink-light);
+        }
+
+        .result-card-value {
+            margin-top: 6px;
+            font-size: 30px;
+            font-weight: 800;
+            color: var(--ink);
+        }
+
+        .result-card.green {
+            background: var(--green-light);
+        }
+
+        .result-card.red {
+            background: #fff0eb;
+        }
+
+        .result-card.blue {
+            background: #e7f5ff;
+        }
+
+        .result-card.yellow {
+            background: #fff5d8;
+        }
+
+        .retry-row {
+            margin-top: 20px;
+        }
+
+        /* ============================================
+           14. TEACHER SECTION
+           ============================================ */
+        .teacher-gate {
+            text-align: center;
+            margin-top: 30px;
+            animation: reveal 0.6s ease both;
+            animation-delay: 0.3s;
+        }
+
+        .teacher-toggle-btn {
+            font-size: 13px;
+            font-weight: 600;
+            color: #5a8a7d;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 10px;
+            transition: all 0.2s;
+            opacity: 0.7;
+        }
+
+        .teacher-toggle-btn:hover {
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .teacher-login-box {
+            display: none;
+            margin-top: 12px;
+        }
+
+        .teacher-login-box.show {
+            display: block;
+        }
+
+        .teacher-login-inner {
+            background: var(--cream);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 12px 40px rgba(39, 118, 139, 0.1);
+            border-radius: var(--radius-lg);
+            padding: 28px 24px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .teacher-pin-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: white;
+            border: 2px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            font-size: 16px;
+            text-align: center;
+            letter-spacing: 0.3em;
+            color: var(--ink);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .teacher-pin-input:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 4px var(--focus-ring);
+        }
+
+        .teacher-login-error {
+            margin-top: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--red-text);
+            display: none;
+        }
+
+        .teacher-login-error.show {
+            display: block;
+        }
+
+        /* Teacher dashboard */
+        .teacher-dashboard {
+            display: none;
+        }
+
+        .teacher-dashboard.show {
+            display: block;
+        }
+
+        .teacher-dashboard .card {
+            text-align: left;
+        }
+
+        .teacher-section-title {
+            font-family: var(--font-story);
+            font-size: clamp(18px, 2.5vw, 24px);
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: 16px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #e8f0e8;
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .stat-card-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--ink-light);
+        }
+
+        .stat-card-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--ink);
+            margin-top: 4px;
+        }
+
+        /* Tables */
+        .table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-top: 16px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 13px;
+        }
+
+        .data-table th {
+            background: #f0f7f0;
+            padding: 12px 10px;
+            text-align: left;
+            font-weight: 700;
+            color: var(--ink);
+            border-bottom: 2px solid #d3e6d3;
+            white-space: nowrap;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .data-table th:hover {
+            background: #e4f0e4;
+        }
+
+        .data-table td {
+            padding: 10px;
+            border-bottom: 1px solid #ecf2ec;
+            color: var(--ink);
+        }
+
+        .data-table tbody tr:hover {
+            background: #f9fef9;
+        }
+
+        .data-table .wrong-cell {
+            color: var(--red-text);
+            font-weight: 700;
+        }
+
+        .search-input {
+            width: 100%;
+            max-width: 320px;
+            padding: 10px 14px;
+            background: white;
+            border: 2px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            color: var(--ink);
+            margin-bottom: 12px;
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 4px var(--focus-ring);
+        }
+
+        /* Bar chart */
+        .chart-container {
+            margin-top: 16px;
+        }
+
+        .chart-bar-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .chart-label {
+            width: 52px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--ink);
+            flex-shrink: 0;
+        }
+
+        .chart-track {
+            flex: 1;
+            height: 32px;
+            background: #f0f0f0;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .chart-fill-correct {
+            height: 100%;
+            background: linear-gradient(90deg, #3bb897, #4fcfb0);
+            border-radius: 8px 0 0 8px;
+            transition: width 0.6s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: white;
+            min-width: 0;
+        }
+
+        .chart-fill-wrong {
+            height: 100%;
+            background: linear-gradient(90deg, #f0a0a0, #e88080);
+            transition: width 0.6s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: white;
+            min-width: 0;
+        }
+
+        .chart-percent {
+            width: 50px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--green-badge);
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        /* Export buttons */
+        .export-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .no-data-msg {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--ink-light);
+            font-size: 15px;
+        }
+
+        /* ============================================
+           15. FOOTER
+           ============================================ */
+        .footer {
+            text-align: center;
+            padding: 20px 16px 12px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #346a69;
+        }
+
+        .footer-flowers {
+            margin-top: 8px;
+            font-size: 22px;
+        }
+
+        /* ============================================
+           16. CONFETTI (perfect score)
+           ============================================ */
+        .confetti-piece {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+            z-index: 999;
+            pointer-events: none;
+            animation: confetti-fall 2.5s ease-out forwards;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg) scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(calc(60vh + 100px)) rotate(720deg) scale(0.3);
+            }
+        }
+
+        /* ============================================
+           17. RESPONSIVE
+           ============================================ */
+        @media (min-width: 600px) {
+            .main-container {
+                padding: 32px 24px 80px;
+            }
+
+            .card {
+                padding: 36px 32px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr 170px auto;
+                align-items: end;
+            }
+
+            .result-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .story-box {
+                padding: 32px 28px;
+            }
+        }
+
+        @media (max-width: 599px) {
+            .header-left {
+                gap: 12px;
+            }
+
+            .mascot {
+                width: 60px;
+                height: 75px;
+            }
+
+            .word-select {
+                min-width: 132px;
+                padding-left: 8px;
+                margin-left: 1px;
+                margin-right: 1px;
+            }
+
+            .story-text {
+                line-height: 2.1;
+            }
+
+            .action-row {
+                flex-direction: column;
+            }
+
+            .action-row .btn {
+                width: 100%;
+            }
+
+            .teacher-login-inner {
+                padding: 20px 16px;
+            }
+        }
+
+        /* ============================================
+           18. REDUCED MOTION
+           ============================================ */
+        @media (prefers-reduced-motion: reduce) {
+
+            .cloud,
+            .mascot,
+            .drop {
+                animation: none !important;
+            }
+
+            .card {
+                animation: none !important;
+            }
+
+            .btn {
+                transition: none !important;
+            }
+
+            .progress-fill {
+                transition: none !important;
+            }
+
+            .confetti-piece {
+                animation: none !important;
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="world">
+        <!-- ══ Decorative Scene ══ -->
+        <div class="sun-glow" aria-hidden="true"></div>
+        <div class="cloud cloud-1" aria-hidden="true"></div>
+        <div class="cloud cloud-2" aria-hidden="true"></div>
+        <div class="cloud cloud-3" aria-hidden="true"></div>
+        <div class="hill hill-back" aria-hidden="true"></div>
+        <div class="hill hill-front" aria-hidden="true"></div>
+        <div class="rain" aria-hidden="true">
+            <div class="drop" style="--x:3;--d:0.9s;--dl:0s"></div>
+            <div class="drop" style="--x:10;--d:1.1s;--dl:0.4s"></div>
+            <div class="drop" style="--x:17;--d:0.85s;--dl:0.15s"></div>
+            <div class="drop" style="--x:24;--d:1.2s;--dl:0.6s"></div>
+            <div class="drop" style="--x:31;--d:0.95s;--dl:0.25s"></div>
+            <div class="drop" style="--x:38;--d:1.05s;--dl:0.5s"></div>
+            <div class="drop" style="--x:45;--d:0.88s;--dl:0.1s"></div>
+            <div class="drop" style="--x:52;--d:1.15s;--dl:0.7s"></div>
+            <div class="drop" style="--x:59;--d:0.92s;--dl:0.35s"></div>
+            <div class="drop" style="--x:66;--d:1.08s;--dl:0.2s"></div>
+            <div class="drop" style="--x:73;--d:0.87s;--dl:0.55s"></div>
+            <div class="drop" style="--x:80;--d:1.18s;--dl:0.45s"></div>
+            <div class="drop" style="--x:87;--d:0.93s;--dl:0.65s"></div>
+            <div class="drop" style="--x:94;--d:1.02s;--dl:0.3s"></div>
+        </div>
+
+        <!-- ══ Main Content ══ -->
+        <div class="main-container">
+
+            <!-- ── Header ── -->
+            <header class="header">
+                <div class="header-left">
+                    <svg class="mascot" viewBox="0 0 90 110" role="img" aria-label="Giọt mưa đang mỉm cười">
+                        <defs>
+                            <linearGradient id="dropGrad" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#5dd8f7" />
+                                <stop offset="100%" stop-color="#20b7dc" />
+                            </linearGradient>
+                        </defs>
+                        <path d="M45 5C31 27 10 51 10 72a35 35 0 0 0 70 0C80 51 59 27 45 5Z" fill="url(#dropGrad)" stroke="#087ba8" stroke-width="3" />
+                        <ellipse cx="32" cy="70" rx="3.2" ry="4.5" fill="#174564" />
+                        <ellipse cx="58" cy="70" rx="3.2" ry="4.5" fill="#174564" />
+                        <ellipse cx="32" cy="68" rx="1.5" ry="1.5" fill="white" opacity="0.8" />
+                        <ellipse cx="58" cy="68" rx="1.5" ry="1.5" fill="white" opacity="0.8" />
+                        <path d="M36 83q9 9 18 0" fill="none" stroke="#174564" stroke-width="3" stroke-linecap="round" />
+                        <circle cx="23" cy="79" r="5.5" fill="#ff9aab" opacity="0.7" />
+                        <circle cx="67" cy="79" r="5.5" fill="#ff9aab" opacity="0.7" />
+                    </svg>
+                    <div>
+                        <p class="eyebrow">Trò chơi giáo dục</p>
+                        <h1 class="game-title">Nhà Thám Hiểm Ngôn Từ</h1>
+                        <p class="game-subtitle">Giải Mã Mưa Mùa Xuân 🌧️</p>
+                    </div>
+                </div>
+                <button id="sound-toggle" class="sound-btn" type="button" aria-pressed="false" title="Bật/tắt âm thanh">
+                    <span class="icon" id="sound-icon">🔇</span>
+                    <span id="sound-label">Âm thanh</span>
+                </button>
+            </header>
+
+            <!-- ── Section 1: Student Info ── -->
+            <section class="card" aria-labelledby="intro-heading">
+                <div class="info-header">
+                    <div class="info-icon" aria-hidden="true">✦</div>
+                    <div>
+                        <h2 id="intro-heading" class="info-title">Chào mừng nhà thám hiểm! 🌟</h2>
+                        <p class="info-desc">Hãy chọn từ thích hợp nhất trong mỗi hộp thả xuống để hoàn thành đoạn văn.</p>
+                    </div>
+                </div>
+                <form id="identity-form" class="form-grid" novalidate>
+                    <div>
+                        <label for="student-name" class="form-label">Họ và tên học sinh</label>
+                        <input id="student-name" class="form-input" type="text" placeholder="Nhập họ và tên..." autocomplete="name" maxlength="100" required>
+                    </div>
+                    <div>
+                        <label for="student-class" class="form-label">Lớp</label>
+                        <input id="student-class" class="form-input" type="text" placeholder="VD: 5A" maxlength="30" required>
+                    </div>
+                    <div>
+                        <label class="form-label" style="opacity:0;" aria-hidden="true">.</label>
+                        <button id="start-button" class="btn btn-primary" type="submit">🚀 BẮT ĐẦU LÀM BÀI</button>
+                    </div>
+                </form>
+                <p id="identity-message" class="form-message" role="alert"></p>
+            </section>
+
+            <!-- ── Section 2: Exercise ── -->
+            <section id="exercise-section" class="card" aria-labelledby="exercise-title">
+                <div class="exercise-header">
+                    <div>
+                        <p class="exercise-kicker">Bài tập</p>
+                        <h2 id="exercise-title" class="exercise-title">3. Chọn từ thích hợp trong ngoặc đơn để hoàn thành đoạn văn.</h2>
+                    </div>
+                    <div class="progress-badge" aria-live="polite">
+                        <span>📝</span>
+                        <span><span id="progress-count">0</span>/5 ô đã hoàn thành</span>
+                    </div>
+                </div>
+
+                <div class="progress-track" role="progressbar" aria-label="Số ô đã hoàn thành" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0" id="progress-track">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+
+                <div class="story-box">
+                    <p class="story-text">Mưa mùa xuân xôn xao, phơi phới. Những hạt mưa <select id="answer-1" class="word-select" aria-label="Hộp 1: từ miêu tả hạt mưa">
+                            <option value="">-- Chọn từ --</option>
+                            <option value="bé mọn">bé mọn</option>
+                            <option value="bé con">bé con</option>
+                            <option value="bé nhỏ">bé nhỏ</option>
+                        </select>, mềm mại, rơi như nhảy nhót. Hạt nọ tiếp hạt kia đan xuống mặt đất. Mặt đất đã <select id="answer-2" class="word-select" aria-label="Hộp 2: trạng thái mặt đất">
+                            <option value="">-- Chọn từ --</option>
+                            <option value="khô cằn">khô cằn</option>
+                            <option value="khô khan">khô khan</option>
+                            <option value="khô khốc">khô khốc</option>
+                        </select> bỗng thức dậy, âu yếm đón lấy những giọt mưa ấm áp, <select id="answer-3" class="word-select" aria-label="Hộp 3: miêu tả giọt mưa">
+                            <option value="">-- Chọn từ --</option>
+                            <option value="trong sáng">trong sáng</option>
+                            <option value="trong lành">trong lành</option>
+                            <option value="trong xanh">trong xanh</option>
+                        </select>. Mặt đất lại <select id="answer-4" class="word-select" aria-label="Hộp 4: trạng thái mặt đất sau mưa">
+                            <option value="">-- Chọn từ --</option>
+                            <option value="dịu mềm">dịu mềm</option>
+                            <option value="dịu nhẹ">dịu nhẹ</option>
+                            <option value="dịu ngọt">dịu ngọt</option>
+                        </select>, lại cần mẫn tiếp nhựa sống cho cây cỏ. Mưa mùa xuân đã mang lại cho cây <select id="answer-5" class="word-select" aria-label="Hộp 5: điều mưa mang lại cho cây">
+                            <option value="">-- Chọn từ --</option>
+                            <option value="sức lực">sức lực</option>
+                            <option value="sức vóc">sức vóc</option>
+                            <option value="sức sống">sức sống</option>
+                        </select> tràn đầy. Và cây trả nghĩa cho mùa bằng cả mùa hoa thơm trái ngọt.</p>
+                    <p class="story-source">(Theo Nguyễn Thị Thu Trang)</p>
+                </div>
+
+                <!-- Feedback for wrong answers -->
+                <div id="answer-feedback" class="feedback-box" aria-live="polite"></div>
+
+                <!-- Action buttons -->
+                <div class="action-row">
+                    <button id="reset-button" class="btn btn-outline" type="button">🔄 LÀM LẠI</button>
+                    <button id="check-button" class="btn btn-check" type="button">✅ KIỂM TRA BÀI</button>
+                    <button id="submit-button" class="btn btn-submit" type="button">📨 NỘP BÀI</button>
+                </div>
+
+                <p id="status" class="status-text" role="status" aria-live="polite"></p>
+            </section>
+
+            <!-- ── Section 3: Results ── -->
+            <section id="result-section" class="card result-section" aria-labelledby="result-heading">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:4px;">
+                    <h2 id="result-heading" class="result-heading">🏆 Kết quả của bạn</h2>
+                    <span id="attempt-badge" class="attempt-badge">🌱 Lượt làm bài: 1</span>
+                </div>
+                <p id="encouragement" class="encouragement"></p>
+                <div class="result-grid">
+                    <div class="result-card green">
+                        <p class="result-card-label">Số câu đúng</p>
+                        <p class="result-card-value" id="correct-result">0</p>
+                    </div>
+                    <div class="result-card red">
+                        <p class="result-card-label">Số câu sai</p>
+                        <p class="result-card-value" id="wrong-result">0</p>
+                    </div>
+                    <div class="result-card blue">
+                        <p class="result-card-label">Điểm số</p>
+                        <p class="result-card-value" id="score-result">0/10</p>
+                    </div>
+                    <div class="result-card yellow">
+                        <p class="result-card-label">Tỉ lệ đúng</p>
+                        <p class="result-card-value" id="accuracy-result">0%</p>
+                    </div>
+                </div>
+                <div class="retry-row">
+                    <button id="retry-button" class="btn btn-primary" type="button">🔄 LÀM LẠI TỪ ĐẦU</button>
+                </div>
+            </section>
+
+            <!-- ── Section 4: Teacher Area ── -->
+            <div class="teacher-gate">
+                <button id="teacher-toggle" class="teacher-toggle-btn" type="button">👩‍🏫 Khu vực Giáo viên</button>
+
+                <div id="teacher-login-box" class="teacher-login-box">
+                    <div class="teacher-login-inner">
+                        <h3 class="info-title" style="font-size:18px; margin-bottom:16px;">🔐 Đăng nhập Giáo viên</h3>
+                        <label for="teacher-pin" class="form-label">Nhập mã PIN:</label>
+                        <input id="teacher-pin" class="teacher-pin-input" type="password" maxlength="20" placeholder="••••••" autocomplete="off">
+                        <button id="teacher-login-btn" class="btn btn-primary" type="button" style="width:100%; margin-top:14px;">Đăng nhập</button>
+                        <p id="teacher-login-error" class="teacher-login-error" role="alert"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Teacher Dashboard (populated in Steps 3-4) -->
+            <div id="teacher-dashboard" class="teacher-dashboard">
+                <!-- Summary Stats -->
+                <div class="card">
+                    <h3 class="teacher-section-title">📊 Tổng quan</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <p class="stat-card-label">Tổng bài nộp</p>
+                            <p class="stat-card-value" id="stat-total">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <p class="stat-card-label">Điểm trung bình</p>
+                            <p class="stat-card-value" id="stat-avg">–</p>
+                        </div>
+                        <div class="stat-card">
+                            <p class="stat-card-label">Tỉ lệ đúng TB</p>
+                            <p class="stat-card-value" id="stat-accuracy">–</p>
+                        </div>
+                        <div class="stat-card">
+                            <p class="stat-card-label">Điểm 10 tuyệt đối</p>
+                            <p class="stat-card-value" id="stat-perfect">0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Student Submissions Table -->
+                <div class="card">
+                    <h3 class="teacher-section-title">📋 Danh sách bài nộp</h3>
+                    <input id="search-students" class="search-input" type="text" placeholder="🔍 Tìm theo tên hoặc lớp...">
+                    <div class="table-wrapper">
+                        <table class="data-table" id="submissions-table">
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Họ và tên</th>
+                                    <th>Lớp</th>
+                                    <th>Thời gian</th>
+                                    <th>Ô 1</th>
+                                    <th>Ô 2</th>
+                                    <th>Ô 3</th>
+                                    <th>Ô 4</th>
+                                    <th>Ô 5</th>
+                                    <th>Đúng</th>
+                                    <th>Sai</th>
+                                    <th>Điểm</th>
+                                    <th>Tỉ lệ</th>
+                                    <th>Lượt</th>
+                                </tr>
+                            </thead>
+                            <tbody id="submissions-body">
+                            </tbody>
+                        </table>
+                    </div>
+                    <p id="no-submissions" class="no-data-msg">Chưa có dữ liệu bài nộp.</p>
+                </div>
+
+                <!-- Per-Question Statistics -->
+                <div class="card">
+                    <h3 class="teacher-section-title">📈 Thống kê theo câu hỏi</h3>
+                    <div class="table-wrapper">
+                        <table class="data-table" id="question-stats-table">
+                            <thead>
+                                <tr>
+                                    <th>Câu</th>
+                                    <th>Nội dung cần điền</th>
+                                    <th>Đáp án đúng</th>
+                                    <th>Số HS đúng</th>
+                                    <th>Số HS sai</th>
+                                    <th>Tỉ lệ đúng (%)</th>
+                                    <th>Tỉ lệ sai (%)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="question-stats-body">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Bar Chart -->
+                <div class="card">
+                    <h3 class="teacher-section-title">📊 Biểu đồ tỉ lệ đúng/sai theo câu</h3>
+                    <div class="chart-container" id="accuracy-chart">
+                        <p class="no-data-msg">Chưa có dữ liệu để vẽ biểu đồ.</p>
+                    </div>
+                </div>
+
+                <!-- Export Buttons -->
+                <div class="card">
+                    <h3 class="teacher-section-title">📥 Xuất dữ liệu</h3>
+                    <p style="font-size:14px; color:var(--ink-light); margin-bottom:14px;">Tải toàn bộ kết quả bài nộp về máy tính để tổng hợp.</p>
+                    <div class="export-row">
+                        <button id="export-csv" class="btn btn-outline" type="button">📄 Tải file CSV</button>
+                        <button id="export-excel" class="btn btn-outline" type="button">📊 Tải file Excel</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── Footer ── -->
+            <footer class="footer">
+                <span>Nhà Thám Hiểm Ngôn Từ — Trò chơi giáo dục cho học sinh lớp 5</span>
+                <div class="footer-flowers" aria-hidden="true">🌼 &nbsp; 🌷 &nbsp; 🌼</div>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        (() => {
+            'use strict';
+
+            /* ══════════════════════════════════════════
+               1. CONFIGURATION & OBFUSCATED DATA (Step 2.7)
+               ══════════════════════════════════════════ */
+
+            // ⚠️ GIÁO VIÊN: Dán URL Google Apps Script Web App vào đây (Bước 3)
+            const API_URL = '';
+
+            // Obfuscated answer & pedagogical guidance blob (XOR 0x5A + Base64)
+            // Ngăn chặn học sinh xem mã nguồn hoặc DevTools để tìm đáp án trần
+            const _DATA_BLOB = 'AVB6eiEzPmBrdjs0KWA4mfN6NDK74dV2MzQ+PyJgaXY2Ozg/NmAOu+HxejczmfAvei674Pl6Mrvg+y56N5zqO3YyMzQuYBK74Psuejec6jt6Ii+Z+DR6KLvg/y56NDK74dV6N7vh0TR2eje74ds3eje74Pszeiic+zN6NDKc6no0Mrvg+SN6NDKZ6S50eid2UHp6ITM+YGh2OzQpYDEyme56Obvg6zR2MzQ+PyJga3Y2Ozg/NmAOKLvg+zQ9ei4ymfszeje74O0uep7Lu+D/LnYyMzQuYBe74O0uep7Lu+D/LnopOy96N5njO3qey5nuND16Nrvg+zQyejEyme56NLvh8y56NLvg4XZ6MTI7NXoxMpn7Lnqey5zqu+H5OXqey5n7NDJ6LjK74fM5dHondlB6eiEzPmBpdjs0KWAuKDU0PXo2mfo0MnYzND4/ImBodjY7OD82YBczmfAvei674Pl6PTO74dcuejec6jt2MjM0LmAdM7vh1y56N5zqO3oiL5n4NHouKDU0PXouKLvg4TV2ejc7ND16Nrvg+zN6Kbvh63ouKDU0PXo2mfo0Mno5MjV6MTKZ7jQ9ej0zOzR0eid2UHp6ITM+YG52OzQpYD674dEveje74ds3djM0Pj8iYGt2Njs4PzZgDii74Ps0PXouMpn7M3opOy96N5zqO3YyMzQuYBe74O0uep7Lu+D/Lno0Pbvg/zd6N5zqO3oiL5n4NHouKLvhxXo0mfA0eje74ds3eje74PszdnounPszeiK74csqdno3mfoveje74ft0eid2UHp6ITM+YG92OzQpYCm74fM5eim74cs0PXYzND4/ImBpdjY7OD82YJ7KM7vh2y96N5zqO3o3OzQ9ejkyNXo5mfgjdjIzNC5gF5zqO3oiL5n4NHouM7vg5Sp6LjKZ8Dd6NDK74es7eim74cs0PXosmfp6ND0vu+HJNHopu+HzOXopu+HLND16LiiZ+jR6Lii74dt6OTI1ejmZ+CN6ObvhyzN0eidQBw==';
+
+            function getQuestionData() {
+                try {
+                    const binStr = atob(_DATA_BLOB);
+                    const bytes = new Uint8Array(binStr.length);
+                    for (let i = 0; i < binStr.length; i++) {
+                        bytes[i] = binStr.charCodeAt(i) ^ 0x5a;
+                    }
+                    return JSON.parse(new TextDecoder('utf-8').decode(bytes));
+                } catch (e) {
+                    console.error('Data decode error:', e);
+                    return [];
+                }
+            }
+
+            /* ══════════════════════════════════════════
+               2. DOM REFERENCES
+               ══════════════════════════════════════════ */
+            const $ = id => document.getElementById(id);
+            const selects = Array.from({ length: 5 }, (_, i) => $(`answer-${i + 1}`));
+
+            /* ══════════════════════════════════════════
+               3. STATE MANAGEMENT (Step 2.1)
+               ══════════════════════════════════════════ */
+            const STATE = {
+                started: false,
+                submitted: false,
+                pending: false,
+                soundEnabled: false,
+                attemptNumber: 1
+            };
+
+            let audioCtx = null;
+            let musicTimer = null;
+            let tuneStep = 0;
+
+            /* ══════════════════════════════════════════
+               4. SOUND SYSTEM - WEB AUDIO API (Step 2.6)
+               ══════════════════════════════════════════ */
+            function initAudio() {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+            }
+
+            function playTone(freq, dur, type = 'sine', vol = 0.04) {
+                if (!STATE.soundEnabled) return;
+                try {
+                    initAudio();
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = type;
+                    osc.frequency.value = freq;
+                    gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + dur);
+                    osc.connect(gain).connect(audioCtx.destination);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + dur);
+                } catch (e) { /* silent fail */ }
+            }
+
+            // Tiếng giọt nước "tí tách" rơi khi chọn từ trong dropdown
+            function playWaterDrop() {
+                if (!STATE.soundEnabled) return;
+                try {
+                    initAudio();
+                    const t = audioCtx.currentTime;
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(1400, t);
+                    osc.frequency.exponentialRampToValueAtTime(520, t + 0.12);
+                    gain.gain.setValueAtTime(0.05, t);
+                    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
+                    osc.connect(gain).connect(audioCtx.destination);
+                    osc.start(t);
+                    osc.stop(t + 0.12);
+                } catch (e) { /* silent fail */ }
+            }
+
+            // Tiếng click nút bấm
+            function playClick() {
+                playTone(650, 0.07, 'sine', 0.03);
+            }
+
+            // Giai điệu chào mừng khi bật âm thanh
+            function playWelcomeJingle() {
+                [523, 659, 784, 1047].forEach((n, i) => {
+                    setTimeout(() => playTone(n, 0.16, 'triangle', 0.045), i * 90);
+                });
+            }
+
+            // Hợp âm chiến thắng hoan hỉ khi hoàn thành xuất sắc
+            function playVictoryChime() {
+                if (!STATE.soundEnabled) return;
+                const chords = [
+                    [523.25, 659.25, 783.99],          // C major
+                    [587.33, 739.99, 880.00],          // D major
+                    [659.25, 830.61, 987.77],          // E major
+                    [783.99, 987.77, 1318.51, 1567.98] // G major tươi sáng
+                ];
+                chords.forEach((chord, i) => {
+                    setTimeout(() => {
+                        chord.forEach(freq => playTone(freq, 0.28, 'triangle', 0.035));
+                    }, i * 140);
+                });
+            }
+
+            // Tiếng vỗ tay hoan hô sinh động
+            function playApplause() {
+                if (!STATE.soundEnabled) return;
+                try {
+                    initAudio();
+                    for (let i = 0; i < 7; i++) {
+                        setTimeout(() => {
+                            const bufferSize = audioCtx.sampleRate * 0.04;
+                            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                            const data = buffer.getChannelData(0);
+                            for (let j = 0; j < bufferSize; j++) {
+                                data[j] = (Math.random() * 2 - 1) * Math.exp(-j / (bufferSize * 0.3));
+                            }
+                            const noise = audioCtx.createBufferSource();
+                            noise.buffer = buffer;
+                            const filter = audioCtx.createBiquadFilter();
+                            filter.type = 'bandpass';
+                            filter.frequency.value = 1100 + Math.random() * 500;
+                            const gain = audioCtx.createGain();
+                            gain.gain.value = 0.035;
+                            noise.connect(filter).connect(gain).connect(audioCtx.destination);
+                            noise.start();
+                        }, i * 75 + Math.random() * 25);
+                    }
+                } catch (e) { /* silent fail */ }
+            }
+
+            // Tiếng an ủi dịu dàng khi câu trả lời chưa đúng
+            function playSoftFail() {
+                playTone(392, 0.25, 'sine', 0.035);
+                setTimeout(() => playTone(330, 0.35, 'sine', 0.035), 160);
+            }
+
+            // Nhạc nền ngũ cung mùa xuân du dương nhẹ nhàng
+            function startMusic() {
+                clearInterval(musicTimer);
+                tuneStep = 0;
+                const melody = [523, 659, 784, 880, 784, 659, 587, 523, 659, 784, 1047, 880, 784, 659, 587, 523];
+                musicTimer = setInterval(() => {
+                    if (!STATE.soundEnabled) return;
+                    const note = melody[tuneStep % melody.length];
+                    playTone(note, 0.22, 'triangle', 0.018);
+                    playTone(note / 2, 0.32, 'sine', 0.012);
+                    if (tuneStep % 4 === 0) {
+                        playTone(note * 1.5, 0.18, 'sine', 0.008);
+                    }
+                    tuneStep++;
+                }, 420);
+            }
+
+            function stopMusic() {
+                clearInterval(musicTimer);
+                musicTimer = null;
+                if (audioCtx && audioCtx.state === 'running') {
+                    audioCtx.suspend();
+                }
+            }
+
+            /* ══════════════════════════════════════════
+               5. UI HELPERS & VISUAL EFFECTS
+               ══════════════════════════════════════════ */
+            function setStatus(msg, isError = false) {
+                const el = $('status');
+                el.textContent = msg;
+                el.className = 'status-text' + (isError ? ' error' : msg ? ' success' : '');
+            }
+
+            function updateProgress() {
+                const filled = selects.filter(s => s.value).length;
+                $('progress-count').textContent = filled;
+                $('progress-fill').style.width = `${filled * 20}%`;
+                $('progress-track').setAttribute('aria-valuenow', String(filled));
+            }
+
+            function normalize(val) {
+                return (val || '').trim().normalize('NFC').replace(/\s+/g, ' ').toLocaleLowerCase('vi');
+            }
+
+            function triggerShake(element) {
+                if (!element) return;
+                element.classList.remove('shake');
+                void element.offsetWidth; // Force reflow
+                element.classList.add('shake');
+                setTimeout(() => element.classList.remove('shake'), 600);
+            }
+
+            function createConfetti() {
+                const colors = ['#ff6b6b', '#ffd93d', '#6bcb77', '#4d96ff', '#ff9a76', '#a685e2', '#f38181'];
+                for (let i = 0; i < 45; i++) {
+                    const piece = document.createElement('div');
+                    piece.className = 'confetti-piece';
+                    piece.style.left = Math.random() * 100 + 'vw';
+                    piece.style.top = Math.random() * 30 + 'vh';
+                    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    piece.style.width = (Math.random() * 8 + 6) + 'px';
+                    piece.style.height = (Math.random() * 8 + 6) + 'px';
+                    piece.style.animationDuration = (Math.random() * 1.5 + 2) + 's';
+                    piece.style.animationDelay = (Math.random() * 0.4) + 's';
+                    piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                    document.body.appendChild(piece);
+                    setTimeout(() => piece.remove(), 3500);
+                }
+            }
+
+            /* ══════════════════════════════════════════
+               6. FORM VALIDATION (Step 2.2)
+               ══════════════════════════════════════════ */
+            function validateIdentity() {
+                const nameInput = $('student-name');
+                const classInput = $('student-class');
+                const name = nameInput.value.trim().replace(/\s+/g, ' ');
+                const studentClass = classInput.value.trim().replace(/\s+/g, ' ');
+                const msgEl = $('identity-message');
+
+                if (!name || !studentClass) {
+                    msgEl.textContent = 'Bạn hãy nhập họ và tên cùng lớp trước khi bắt đầu nhé!';
+                    msgEl.classList.add('show');
+                    if (!name) {
+                        triggerShake(nameInput);
+                        nameInput.focus();
+                    } else {
+                        triggerShake(classInput);
+                        classInput.focus();
+                    }
+                    return null;
+                }
+
+                msgEl.classList.remove('show');
+                return { name, studentClass };
+            }
+
+            /* ══════════════════════════════════════════
+               7. SCORING & PEDAGOGICAL FEEDBACK (Step 2.3 & 2.4)
+               ══════════════════════════════════════════ */
+            function gradeAndReveal() {
+                const qData = getQuestionData();
+                let correct = 0;
+                const wrongItems = [];
+                const values = [];
+
+                selects.forEach((sel, i) => {
+                    const item = qData[i] || { index: 0, ans: '', label: '', hint: '' };
+                    const userVal = sel.value;
+                    values.push(userVal);
+
+                    // So khớp chính xác cả giá trị chuỗi NFC lẫn chỉ số vị trí
+                    const isRight = (sel.selectedIndex === item.index) || (normalize(userVal) === normalize(item.ans));
+
+                    if (isRight) {
+                        correct++;
+                        sel.classList.add('correct');
+                        sel.classList.remove('incorrect');
+                    } else {
+                        sel.classList.add('incorrect');
+                        sel.classList.remove('correct');
+                        wrongItems.push({
+                            qNum: i + 1,
+                            userVal: userVal || '(Chưa chọn)',
+                            correctVal: item.ans,
+                            hint: item.hint
+                        });
+                    }
+                    sel.disabled = true;
+                });
+
+                const wrong = 5 - correct;
+                const score = correct * 2;
+                const accuracy = correct * 20;
+
+                // Cập nhật các thẻ kết quả
+                $('correct-result').textContent = correct;
+                $('wrong-result').textContent = wrong;
+                $('score-result').textContent = `${score}/10`;
+                $('accuracy-result').textContent = `${accuracy}%`;
+                $('attempt-badge').textContent = `🌱 Lượt làm bài: ${STATE.attemptNumber}`;
+
+                // Lời động viên chuẩn theo kế hoạch (Bước 2.4)
+                let encouragement = '';
+                if (correct === 5) {
+                    encouragement = '🎉 Tuyệt vời! Bạn là nhà thám hiểm ngôn từ xuất sắc!';
+                } else if (correct === 4) {
+                    encouragement = '👏 Giỏi lắm! Bạn gần hoàn hảo rồi!';
+                } else if (correct === 3) {
+                    encouragement = '😊 Bạn đã tiến bộ rồi! Hãy xem lại những từ còn nhầm nhé.';
+                } else if (correct >= 1) {
+                    encouragement = '💪 Cố gắng thêm một chút nhé! Bạn sẽ làm tốt hơn.';
+                } else {
+                    encouragement = '🌱 Đừng nản nhé! Hãy đọc lại đoạn văn và thử lại lần nữa.';
+                }
+                $('encouragement').textContent = encouragement;
+
+                // Hiển thị phản hồi sư phạm chi tiết
+                const feedbackEl = $('answer-feedback');
+                if (correct === 5) {
+                    feedbackEl.innerHTML = `
+                        <div class="feedback-item perfect-item">
+                            🌟 <strong>Hoàn hảo!</strong> Bạn đã chọn chính xác cả 5 từ ngữ miêu tả mưa mùa xuân. Toàn bộ đoạn văn đã được giải mã trọn vẹn và tràn đầy cảm xúc!
+                        </div>
+                    `;
+                    feedbackEl.classList.add('show');
+                } else if (wrongItems.length > 0) {
+                    let html = `
+                        <div class="feedback-title">🌱 Hướng dẫn chi tiết các câu cần lưu ý:</div>
+                        <div class="feedback-list">
+                    `;
+                    wrongItems.forEach(item => {
+                        html += `
+                            <div class="feedback-item">
+                                <span class="badge-q">Ô ${item.qNum}</span>
+                                Bạn chọn: <span class="user-val">${escapeHtml(item.userVal)}</span>
+                                &nbsp;→&nbsp; Từ đúng là: <span class="correct-val">"${escapeHtml(item.correctVal)}"</span>
+                                <span class="hint-text">💡 ${escapeHtml(item.hint)}</span>
+                            </div>
+                        `;
+                    });
+                    html += `</div>`;
+                    feedbackEl.innerHTML = html;
+                    feedbackEl.classList.add('show');
+                } else {
+                    feedbackEl.classList.remove('show');
+                    feedbackEl.innerHTML = '';
+                }
+
+                // Khóa các nút để tránh nộp lặp (Bước 2.5)
+                $('reset-button').disabled = true;
+                $('check-button').disabled = true;
+                $('submit-button').disabled = true;
+                $('student-name').readOnly = true;
+                $('student-class').readOnly = true;
+
+                // Hiển thị phần kết quả
+                const resultSection = $('result-section');
+                resultSection.classList.add('show');
+                resultSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+                // Âm thanh & hiệu ứng hình ảnh
+                if (correct === 5) {
+                    playVictoryChime();
+                    playApplause();
+                    createConfetti();
+                } else if (correct >= 3) {
+                    playVictoryChime();
+                } else {
+                    playSoftFail();
+                }
+
+                return { correct, wrong, score, accuracy, values };
+            }
+
+            function escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text || '';
+                return div.innerHTML;
+            }
+
+            /* ══════════════════════════════════════════
+               8. RESET & MULTI-ATTEMPT (Step 2.5)
+               ══════════════════════════════════════════ */
+            function resetCurrentAttempt() {
+                // Xóa trắng lựa chọn trong khi đang làm bài
+                selects.forEach(sel => {
+                    sel.value = '';
+                    sel.classList.remove('correct', 'incorrect', 'shake');
+                });
+                $('answer-feedback').classList.remove('show');
+                $('answer-feedback').innerHTML = '';
+                updateProgress();
+                setStatus('Đã xóa các lựa chọn. Bạn có thể bắt đầu lại!');
+                playTone(440, 0.1, 'triangle', 0.03);
+            }
+
+            function restartNewAttempt() {
+                // Chuẩn bị cho lượt làm bài mới
+                STATE.attemptNumber++;
+                STATE.submitted = false;
+                STATE.pending = false;
+
+                // Mở khóa controls
+                selects.forEach(sel => {
+                    sel.value = '';
+                    sel.classList.remove('correct', 'incorrect', 'shake');
+                    sel.disabled = false;
+                });
+
+                $('answer-feedback').classList.remove('show');
+                $('answer-feedback').innerHTML = '';
+                $('result-section').classList.remove('show');
+
+                $('reset-button').disabled = false;
+                $('check-button').disabled = false;
+                $('submit-button').disabled = false;
+                $('student-name').readOnly = false;
+                $('student-class').readOnly = false;
+
+                updateProgress();
+                setStatus(`Bắt đầu lượt làm bài thứ ${STATE.attemptNumber}! Hãy đọc kỹ đoạn văn và tự tin chinh phục nhé! 🌟`);
+
+                $('exercise-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                selects[0].focus({ preventScroll: true });
+                playTone(523, 0.12, 'sine', 0.05);
+            }
+
+            /* ══════════════════════════════════════════
+               9. DATA SUBMISSION & LOCAL BACKUP (Step 2.5)
+               ══════════════════════════════════════════ */
+            async function submitToServer(record) {
+                // Luôn lưu bản sao vào localStorage để không bao giờ mất dữ liệu học sinh
+                try {
+                    const localData = JSON.parse(localStorage.getItem('ntt_submissions') || '[]');
+                    localData.push(record);
+                    localStorage.setItem('ntt_submissions', JSON.stringify(localData));
+                } catch (e) {
+                    console.warn('LocalStorage save warning:', e);
+                }
+
+                if (!API_URL) {
+                    return { success: false, reason: 'no_api' };
+                }
+
+                try {
+                    await fetch(API_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(record),
+                        mode: 'no-cors'
+                    });
+                    return { success: true };
+                } catch (err) {
+                    console.error('Submit network error:', err);
+                    return { success: false, reason: 'network' };
+                }
+            }
+
+            /* ══════════════════════════════════════════
+               10. EVENT LISTENERS
+               ══════════════════════════════════════════ */
+
+            // ── Bật / Tắt âm thanh ──
+            $('sound-toggle').addEventListener('click', () => {
+                STATE.soundEnabled = !STATE.soundEnabled;
+                $('sound-toggle').setAttribute('aria-pressed', String(STATE.soundEnabled));
+                $('sound-icon').textContent = STATE.soundEnabled ? '🔊' : '🔇';
+
+                if (STATE.soundEnabled) {
+                    playWelcomeJingle();
+                    startMusic();
+                } else {
+                    stopMusic();
+                }
+            });
+
+            // ── Bắt đầu làm bài ──
+            $('identity-form').addEventListener('submit', e => {
+                e.preventDefault();
+                if (STATE.submitted) return;
+                const identity = validateIdentity();
+                if (!identity) return;
+
+                STATE.started = true;
+                $('exercise-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                selects[0].focus({ preventScroll: true });
+                setStatus('Sẵn sàng khám phá! Hãy đọc kỹ và chọn đủ cả 5 từ nhé. 🌟');
+                playWelcomeJingle();
+            });
+
+            // ── Thay đổi trong dropdown ──
+            selects.forEach(sel => {
+                sel.addEventListener('change', () => {
+                    sel.classList.remove('shake');
+                    updateProgress();
+                    if (!STATE.submitted) setStatus('');
+                    playWaterDrop();
+                });
+            });
+
+            // ── Nút "LÀM LẠI" (khi đang làm bài) ──
+            $('reset-button').addEventListener('click', () => {
+                if (STATE.submitted || STATE.pending) return;
+                resetCurrentAttempt();
+            });
+
+            // ── Nút "KIỂM TRA BÀI" ──
+            $('check-button').addEventListener('click', () => {
+                if (STATE.submitted || STATE.pending) return;
+                playClick();
+
+                if (!STATE.started) {
+                    setStatus('Bạn hãy nhập Họ tên, Lớp và bấm "🚀 BẮT ĐẦU LÀM BÀI" trước nhé!', true);
+                    $('identity-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    validateIdentity();
+                    return;
+                }
+
+                const emptySelects = selects.filter(s => !s.value);
+                if (emptySelects.length > 0) {
+                    emptySelects.forEach(s => triggerShake(s));
+                    setStatus(`⚠️ Bạn còn thiếu ${emptySelects.length} ô chưa chọn! Hãy hoàn thành cả 5 ô nhé.`, true);
+                    emptySelects[0].focus();
+                    playSoftFail();
+                } else {
+                    setStatus('✨ Bạn đã điền đủ cả 5 ô! Hãy đọc lại toàn bộ đoạn văn một lượt và bấm "📨 NỘP BÀI" khi chắc chắn nhé.', false);
+                    playTone(659, 0.15, 'triangle', 0.04);
+                    setTimeout(() => playTone(880, 0.2, 'sine', 0.04), 110);
+                }
+            });
+
+            // ── Nút "NỘP BÀI" ──
+            $('submit-button').addEventListener('click', async () => {
+                if (STATE.pending || STATE.submitted) return;
+
+                // Kiểm tra thông tin học sinh
+                const identity = validateIdentity();
+                if (!identity) {
+                    $('identity-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    return;
+                }
+
+                if (!STATE.started) {
+                    setStatus('Bạn hãy bấm "🚀 BẮT ĐẦU LÀM BÀI" trước khi nộp nhé!', true);
+                    $('identity-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    return;
+                }
+
+                // Kiểm tra đủ 5 ô
+                const emptySelects = selects.filter(s => !s.value);
+                if (emptySelects.length > 0) {
+                    emptySelects.forEach(s => triggerShake(s));
+                    setStatus(`⚠️ Bạn cần chọn đủ cả 5 ô trước khi nộp bài nhé! (còn thiếu ${emptySelects.length} ô)`, true);
+                    emptySelects[0].focus();
+                    playSoftFail();
+                    return;
+                }
+
+                STATE.pending = true;
+                $('submit-button').disabled = true;
+                setStatus('Đang chấm điểm bài làm của bạn...');
+                playClick();
+
+                // Chấm điểm và hiển thị kết quả
+                const result = gradeAndReveal();
+                STATE.submitted = true;
+
+                // Tạo đối tượng dữ liệu lưu trữ
+                const record = {
+                    student_name: identity.name,
+                    student_class: identity.studentClass,
+                    submitted_at: new Date().toISOString(),
+                    answer_1: result.values[0],
+                    answer_2: result.values[1],
+                    answer_3: result.values[2],
+                    answer_4: result.values[3],
+                    answer_5: result.values[4],
+                    correct_count: result.correct,
+                    wrong_count: result.wrong,
+                    score: result.score,
+                    accuracy_percent: result.accuracy,
+                    attempt_number: STATE.attemptNumber
+                };
+
+                // Gửi dữ liệu và xử lý phản hồi
+                const serverResult = await submitToServer(record);
+
+                if (serverResult.success) {
+                    setStatus('✅ Đã nộp bài thành công! Kết quả đã được lưu trữ.');
+                } else if (serverResult.reason === 'no_api') {
+                    setStatus('✅ Đã chấm bài xong và lưu trữ trên trình duyệt! (Giáo viên sẽ kết nối Google Sheets ở Bước 3).');
+                } else {
+                    setStatus('⚠️ Đã chấm bài! Do kết nối mạng gián đoạn, kết quả đã được lưu tạm vào máy.', true);
+                }
+
+                STATE.pending = false;
+            });
+
+            // ── Nút "LÀM LẠI TỪ ĐẦU" (Lượt làm bài mới) ──
+            $('retry-button').addEventListener('click', () => {
+                restartNewAttempt();
+            });
+
+            // ── Khu vực Giáo viên (Đăng nhập PIN) ──
+            $('teacher-toggle').addEventListener('click', () => {
+                const box = $('teacher-login-box');
+                const isOpen = box.classList.contains('show');
+                box.classList.toggle('show', !isOpen);
+                if (!isOpen) {
+                    $('teacher-pin').value = '';
+                    $('teacher-login-error').classList.remove('show');
+                    $('teacher-pin').focus();
+                }
+            });
+
+            $('teacher-login-btn').addEventListener('click', () => {
+                const pin = $('teacher-pin').value.trim();
+                if (!pin) {
+                    $('teacher-login-error').textContent = 'Vui lòng nhập mã PIN.';
+                    $('teacher-login-error').classList.add('show');
+                    return;
+                }
+
+                // Hiển thị thông báo trạng thái
+                if (!API_URL) {
+                    // Xem dữ liệu lưu cục bộ
+                    try {
+                        const localSubmissions = JSON.parse(localStorage.getItem('ntt_submissions') || '[]');
+                        if (pin === '123456') { // Mã PIN mặc định
+                            $('teacher-login-error').classList.remove('show');
+                            $('teacher-login-box').classList.remove('show');
+                            $('teacher-dashboard').classList.add('show');
+                            renderLocalTeacherDashboard(localSubmissions);
+                            return;
+                        }
+                    } catch (e) {}
+                    $('teacher-login-error').textContent = 'Mã PIN chưa đúng hoặc giáo viên chưa cấu hình Google Sheets (Bước 3).';
+                    $('teacher-login-error').classList.add('show');
+                    return;
+                }
+
+                $('teacher-login-error').textContent = 'Đang kết nối hệ thống Google Sheets...';
+                $('teacher-login-error').classList.add('show');
+                $('teacher-login-error').style.color = 'var(--ink-light)';
+            });
+
+            $('teacher-pin').addEventListener('keydown', e => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    $('teacher-login-btn').click();
+                }
+            });
+
+            function renderLocalTeacherDashboard(data) {
+                $('stat-total').textContent = data.length;
+                if (!data.length) return;
+                const totalScore = data.reduce((sum, item) => sum + (item.score || 0), 0);
+                const avgScore = (totalScore / data.length).toFixed(1);
+                $('stat-avg').textContent = `${avgScore}/10`;
+                const avgAcc = ((totalScore / (data.length * 10)) * 100).toFixed(0);
+                $('stat-accuracy').textContent = `${avgAcc}%`;
+                const perfect = data.filter(d => d.score === 10).length;
+                $('stat-perfect').textContent = perfect;
+
+                // Danh sách bài nộp
+                const tbody = $('submissions-body');
+                tbody.innerHTML = '';
+                $('no-submissions').style.display = 'none';
+                data.forEach((d, idx) => {
+                    const row = document.createElement('tr');
+                    const time = d.submitted_at ? new Date(d.submitted_at).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }) : '–';
+                    row.innerHTML = `
+                        <td>${idx + 1}</td>
+                        <td><strong>${escapeHtml(d.student_name)}</strong></td>
+                        <td>${escapeHtml(d.student_class)}</td>
+                        <td>${time}</td>
+                        <td>${escapeHtml(d.answer_1)}</td>
+                        <td>${escapeHtml(d.answer_2)}</td>
+                        <td>${escapeHtml(d.answer_3)}</td>
+                        <td>${escapeHtml(d.answer_4)}</td>
+                        <td>${escapeHtml(d.answer_5)}</td>
+                        <td style="color:var(--green-badge); font-weight:700;">${d.correct_count}</td>
+                        <td style="color:var(--red-text); font-weight:700;">${d.wrong_count}</td>
+                        <td><strong>${d.score}/10</strong></td>
+                        <td>${d.accuracy_percent}%</td>
+                        <td>${d.attempt_number || 1}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+
+            // ── Xuất file CSV / Excel ──
+            $('export-csv').addEventListener('click', () => {
+                const data = JSON.parse(localStorage.getItem('ntt_submissions') || '[]');
+                if (!data.length) {
+                    alert('Chưa có bài nộp nào để xuất.');
+                    return;
+                }
+                const headers = ['STT', 'Họ và tên', 'Lớp', 'Thời gian', 'Ô 1', 'Ô 2', 'Ô 3', 'Ô 4', 'Ô 5', 'Đúng', 'Sai', 'Điểm', 'Tỉ lệ', 'Lượt'];
+                const rows = data.map((d, i) => [
+                    i + 1,
+                    `"${d.student_name}"`,
+                    `"${d.student_class}"`,
+                    `"${d.submitted_at || ''}"`,
+                    `"${d.answer_1 || ''}"`,
+                    `"${d.answer_2 || ''}"`,
+                    `"${d.answer_3 || ''}"`,
+                    `"${d.answer_4 || ''}"`,
+                    `"${d.answer_5 || ''}"`,
+                    d.correct_count,
+                    d.wrong_count,
+                    d.score,
+                    `${d.accuracy_percent}%`,
+                    d.attempt_number || 1
+                ]);
+                const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `KetQua_MuaMuaXuan_${new Date().toISOString().slice(0, 10)}.csv`;
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+
+            $('export-excel').addEventListener('click', () => {
+                $('export-csv').click();
+            });
+
+            /* ══════════════════════════════════════════
+               11. INITIALIZATION
+               ══════════════════════════════════════════ */
+            updateProgress();
+
+        })();
+    </script>
+</body>
+
+</html>
