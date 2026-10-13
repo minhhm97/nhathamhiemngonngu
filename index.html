@@ -115,13 +115,52 @@
         /* Clouds */
         .cloud {
             position: fixed;
-            z-index: 0;
+            z-index: 1;
             background: white;
             border-radius: 100px;
-            opacity: 0.82;
-            filter: drop-shadow(0 8px 6px rgba(105, 183, 211, 0.12));
-            animation: drift 12s ease-in-out infinite alternate;
-            pointer-events: none;
+            opacity: 0.92;
+            filter: drop-shadow(0 10px 14px rgba(70, 160, 205, 0.2));
+            animation: drift 16s ease-in-out infinite alternate, cloudFloat 4s ease-in-out infinite alternate;
+            pointer-events: auto;
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s;
+        }
+
+        .cloud:hover {
+            transform: scale(1.08) translateY(-6px) !important;
+            filter: drop-shadow(0 16px 20px rgba(45, 175, 230, 0.32));
+        }
+
+        .cloud.bounce {
+            animation: cloudBounce 0.5s ease-out !important;
+        }
+
+        @keyframes cloudBounce {
+            0% {
+                transform: scale(1);
+            }
+
+            30% {
+                transform: scale(1.15, 0.85) translateY(4px);
+            }
+
+            60% {
+                transform: scale(0.92, 1.12) translateY(-14px);
+            }
+
+            100% {
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        @keyframes cloudFloat {
+            0% {
+                transform: translateY(0);
+            }
+
+            100% {
+                transform: translateY(-8px);
+            }
         }
 
         .cloud::before,
@@ -146,35 +185,117 @@
             bottom: 4%;
         }
 
+        /* Khuôn mặt đám mây vui vẻ */
+        .cloud-face {
+            position: absolute;
+            left: 50%;
+            top: 48%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .cloud-eye {
+            width: 4px;
+            height: 4px;
+            background: #2b556b;
+            border-radius: 50%;
+            display: inline-block;
+            animation: eyeBlink 4s infinite;
+        }
+
+        .cloud-mouth {
+            width: 7px;
+            height: 4px;
+            border: 2px solid #2b556b;
+            border-top: 0;
+            border-radius: 0 0 10px 10px;
+            display: inline-block;
+        }
+
+        /* Hạt mưa rơi tí hon từ đám mây */
+        .cloud-rain-drips {
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            pointer-events: none;
+            overflow: visible;
+        }
+
+        .cloud-rain-drips .drip {
+            position: absolute;
+            top: 0;
+            left: var(--l, 50%);
+            width: 3px;
+            height: 10px;
+            background: linear-gradient(180deg, #5dd8f7, #1ba2ca);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            opacity: 0;
+            animation: cloudDripFall var(--d, 1.2s) var(--dl, 0s) cubic-bezier(0.55, 0.055, 0.675, 0.19) infinite;
+        }
+
+        @keyframes cloudDripFall {
+            0% {
+                transform: translateY(0) scale(0.6);
+                opacity: 0;
+            }
+
+            30% {
+                opacity: 0.9;
+                transform: translateY(8px) scale(1);
+            }
+
+            100% {
+                transform: translateY(45px) scale(0.7);
+                opacity: 0;
+            }
+        }
+
         .cloud-1 {
-            width: 140px;
-            height: 38px;
-            top: 60px;
-            left: 5%;
+            width: 145px;
+            height: 40px;
+            top: 55px;
+            left: 4%;
+            animation-duration: 18s, 4.2s;
         }
 
         .cloud-2 {
-            width: 100px;
-            height: 28px;
-            top: 160px;
-            right: 8%;
-            animation-delay: -5s;
-            animation-duration: 15s;
+            width: 115px;
+            height: 32px;
+            top: 140px;
+            right: 6%;
+            animation-delay: -4s, -1.5s;
+            animation-duration: 20s, 3.8s;
         }
 
         .cloud-3 {
-            width: 110px;
-            height: 32px;
-            top: 280px;
-            left: 55%;
-            opacity: 0.55;
-            animation-delay: -8s;
-            animation-duration: 18s;
+            width: 95px;
+            height: 28px;
+            top: 250px;
+            left: 60%;
+            opacity: 0.6;
+            animation-delay: -9s, -2.5s;
+            animation-duration: 22s, 4.5s;
+        }
+
+        .cloud-4 {
+            width: 105px;
+            height: 30px;
+            top: 320px;
+            left: 8%;
+            opacity: 0.72;
+            animation-delay: -6s, -0.8s;
+            animation-duration: 19s, 3.5s;
         }
 
         @keyframes drift {
             to {
-                transform: translateX(30px);
+                transform: translateX(36px);
             }
         }
 
@@ -187,22 +308,162 @@
             height: 100%;
             pointer-events: none;
             z-index: 0;
+            overflow: hidden;
         }
 
         .drop {
             position: absolute;
-            top: -20px;
-            width: 2px;
-            height: 16px;
-            background: linear-gradient(transparent, rgba(100, 195, 235, 0.5));
-            border-radius: 0 0 2px 2px;
-            animation: fall var(--d, 1s) var(--dl, 0s) linear infinite;
+            top: -30px;
+            width: 2.5px;
+            height: 20px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(93, 216, 247, 0.65) 60%, rgba(32, 183, 220, 0.8));
+            border-radius: 50% 50% 50% 50% / 80% 80% 30% 30%;
+            filter: drop-shadow(0 2px 3px rgba(32, 183, 220, 0.25));
+            animation: fall var(--d, 1.1s) var(--dl, 0s) linear infinite;
             left: calc(var(--x, 50) * 1%);
+            transform: rotate(6deg);
         }
 
         @keyframes fall {
-            to {
-                transform: translateY(calc(100vh + 40px));
+            0% {
+                transform: translateY(-30px) rotate(6deg);
+                opacity: 0;
+            }
+
+            15% {
+                opacity: 0.85;
+            }
+
+            85% {
+                opacity: 0.85;
+            }
+
+            100% {
+                transform: translateY(calc(100vh + 30px)) rotate(6deg);
+                opacity: 0;
+            }
+        }
+
+        /* Gợn sóng nước trên các triền đồi */
+        .ripples-layer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 180px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .ripple {
+            position: absolute;
+            width: 20px;
+            height: 8px;
+            border: 2px solid rgba(135, 215, 240, 0.7);
+            border-radius: 50%;
+            opacity: 0;
+            animation: rippleExpand 3s ease-out infinite;
+        }
+
+        @keyframes rippleExpand {
+            0% {
+                transform: scale(0.3);
+                opacity: 0.8;
+            }
+
+            70% {
+                transform: scale(2.6);
+                opacity: 0.25;
+            }
+
+            100% {
+                transform: scale(3.6);
+                opacity: 0;
+            }
+        }
+
+        /* Hiệu ứng hạt nước tương tác sinh động */
+        .interactive-drop {
+            position: fixed;
+            width: 4px;
+            height: 14px;
+            background: linear-gradient(180deg, #64ddf7, #1ba2ca);
+            border-radius: 50% 50% 50% 50% / 70% 70% 30% 30%;
+            pointer-events: none;
+            z-index: 9999;
+            animation: interactiveFall 0.8s ease-in forwards;
+        }
+
+        @keyframes interactiveFall {
+            0% {
+                transform: translateY(0) scale(0.6);
+                opacity: 0.9;
+            }
+
+            80% {
+                opacity: 0.9;
+            }
+
+            100% {
+                transform: translateY(120px) scale(1);
+                opacity: 0;
+            }
+        }
+
+        .select-drop-splash {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+        }
+
+        .spark-drop {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: #20b7dc;
+            border-radius: 50%;
+            box-shadow: 0 0 6px rgba(93, 216, 247, 0.8);
+            animation: sparkFly 0.55s ease-out forwards;
+        }
+
+        @keyframes sparkFly {
+            0% {
+                transform: translate(0, 0) scale(1.3);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(0.2);
+                opacity: 0;
+            }
+        }
+
+        .mascot-bubble {
+            position: fixed;
+            width: 9px;
+            height: 9px;
+            background: radial-gradient(circle at 30% 30%, #ffffff, #5dd8f7 70%, #1ba2ca);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            box-shadow: 0 2px 6px rgba(32, 183, 220, 0.4);
+            animation: bubblePop 0.75s ease-out forwards;
+        }
+
+        @keyframes bubblePop {
+            0% {
+                transform: translate(0, 0) scale(0.5);
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 0.85;
+            }
+
+            100% {
+                transform: translate(var(--bx), var(--by)) scale(1.5);
+                opacity: 0;
             }
         }
 
@@ -323,22 +584,92 @@
 
         /* Raindrop mascot */
         .mascot {
-            width: 80px;
-            height: 100px;
+            width: 82px;
+            height: 102px;
             flex-shrink: 0;
-            filter: drop-shadow(0 10px 8px rgba(45, 159, 201, 0.2));
-            animation: bob 3s ease-in-out infinite;
+            filter: drop-shadow(0 10px 10px rgba(32, 165, 215, 0.28));
+            animation: mascotBob 3.5s ease-in-out infinite;
+            cursor: pointer;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s;
         }
 
-        @keyframes bob {
+        .mascot:hover {
+            transform: scale(1.1) translateY(-6px) rotate(-3deg);
+            filter: drop-shadow(0 14px 14px rgba(32, 165, 215, 0.42));
+        }
+
+        .mascot.jump {
+            animation: mascotJump 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+        }
+
+        @keyframes mascotBob {
 
             0%,
             100% {
-                transform: translateY(0) rotate(0deg);
+                transform: translateY(0) rotate(0deg) scale(1, 1);
             }
 
-            50% {
-                transform: translateY(-10px) rotate(4deg);
+            30% {
+                transform: translateY(-8px) rotate(2deg) scale(0.98, 1.02);
+            }
+
+            70% {
+                transform: translateY(-12px) rotate(-2.5deg) scale(1.02, 0.98);
+            }
+        }
+
+        @keyframes mascotJump {
+            0% {
+                transform: scale(1.15, 0.85) translateY(4px);
+            }
+
+            35% {
+                transform: scale(0.9, 1.15) translateY(-26px) rotate(8deg);
+            }
+
+            70% {
+                transform: scale(1.05, 0.95) translateY(0) rotate(-3deg);
+            }
+
+            100% {
+                transform: scale(1, 1) translateY(0) rotate(0deg);
+            }
+        }
+
+        /* Chớp mắt của mascot */
+        .mascot-eye {
+            transform-origin: center;
+            animation: eyeBlink 3.8s ease-in-out infinite;
+        }
+
+        @keyframes eyeBlink {
+
+            0%,
+            94%,
+            98%,
+            100% {
+                transform: scaleY(1);
+            }
+
+            96% {
+                transform: scaleY(0.1);
+            }
+        }
+
+        /* Má hồng phát sáng lấp lánh */
+        .mascot-blush {
+            animation: blushPulse 2.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes blushPulse {
+            0% {
+                opacity: 0.65;
+                transform: scale(1);
+            }
+
+            100% {
+                opacity: 0.95;
+                transform: scale(1.1);
             }
         }
 
@@ -1285,7 +1616,12 @@
 
             .cloud,
             .mascot,
-            .drop {
+            .drop,
+            .ripple,
+            .drip,
+            .spark-drop,
+            .interactive-drop,
+            .mascot-bubble {
                 animation: none !important;
             }
 
@@ -1313,26 +1649,72 @@
     <div class="world">
         <!-- ══ Decorative Scene ══ -->
         <div class="sun-glow" aria-hidden="true"></div>
-        <div class="cloud cloud-1" aria-hidden="true"></div>
-        <div class="cloud cloud-2" aria-hidden="true"></div>
-        <div class="cloud cloud-3" aria-hidden="true"></div>
+        <div class="cloud cloud-1" id="cloud-1" aria-hidden="true" title="Chạm vào tớ để tạo mưa xuân nhé!">
+            <div class="cloud-face">
+                <span class="cloud-eye"></span>
+                <span class="cloud-mouth"></span>
+                <span class="cloud-eye"></span>
+            </div>
+            <div class="cloud-rain-drips">
+                <span class="drip" style="--d:1.2s;--dl:0.1s;--l:22%"></span>
+                <span class="drip" style="--d:1.5s;--dl:0.6s;--l:50%"></span>
+                <span class="drip" style="--d:1.3s;--dl:0.3s;--l:78%"></span>
+            </div>
+        </div>
+        <div class="cloud cloud-2" id="cloud-2" aria-hidden="true" title="Chạm vào tớ để tạo mưa xuân nhé!">
+            <div class="cloud-face">
+                <span class="cloud-eye"></span>
+                <span class="cloud-mouth"></span>
+                <span class="cloud-eye"></span>
+            </div>
+            <div class="cloud-rain-drips">
+                <span class="drip" style="--d:1.4s;--dl:0.2s;--l:28%"></span>
+                <span class="drip" style="--d:1.1s;--dl:0.7s;--l:68%"></span>
+            </div>
+        </div>
+        <div class="cloud cloud-3" id="cloud-3" aria-hidden="true" title="Chạm vào tớ để tạo mưa xuân nhé!">
+            <div class="cloud-rain-drips">
+                <span class="drip" style="--d:1.6s;--dl:0.4s;--l:45%"></span>
+            </div>
+        </div>
+        <div class="cloud cloud-4" id="cloud-4" aria-hidden="true" title="Chạm vào tớ để tạo mưa xuân nhé!">
+            <div class="cloud-face">
+                <span class="cloud-eye"></span>
+                <span class="cloud-mouth"></span>
+                <span class="cloud-eye"></span>
+            </div>
+            <div class="cloud-rain-drips">
+                <span class="drip" style="--d:1.3s;--dl:0.5s;--l:35%"></span>
+                <span class="drip" style="--d:1.5s;--dl:0.9s;--l:70%"></span>
+            </div>
+        </div>
         <div class="hill hill-back" aria-hidden="true"></div>
         <div class="hill hill-front" aria-hidden="true"></div>
+        <div class="ripples-layer" aria-hidden="true">
+            <div class="ripple" style="left:8%; bottom:110px; animation-delay:0.3s; animation-duration:2.8s;"></div>
+            <div class="ripple" style="left:28%; bottom:75px; animation-delay:1.4s; animation-duration:3.2s;"></div>
+            <div class="ripple" style="left:52%; bottom:125px; animation-delay:0.9s; animation-duration:2.5s;"></div>
+            <div class="ripple" style="left:74%; bottom:85px; animation-delay:2.1s; animation-duration:3.0s;"></div>
+            <div class="ripple" style="left:90%; bottom:105px; animation-delay:1.1s; animation-duration:2.7s;"></div>
+        </div>
         <div class="rain" aria-hidden="true">
             <div class="drop" style="--x:3;--d:0.9s;--dl:0s"></div>
-            <div class="drop" style="--x:10;--d:1.1s;--dl:0.4s"></div>
-            <div class="drop" style="--x:17;--d:0.85s;--dl:0.15s"></div>
-            <div class="drop" style="--x:24;--d:1.2s;--dl:0.6s"></div>
+            <div class="drop" style="--x:8;--d:1.3s;--dl:0.7s"></div>
+            <div class="drop" style="--x:14;--d:1.1s;--dl:0.4s"></div>
+            <div class="drop" style="--x:19;--d:0.85s;--dl:0.15s"></div>
+            <div class="drop" style="--x:25;--d:1.25s;--dl:0.6s"></div>
             <div class="drop" style="--x:31;--d:0.95s;--dl:0.25s"></div>
-            <div class="drop" style="--x:38;--d:1.05s;--dl:0.5s"></div>
-            <div class="drop" style="--x:45;--d:0.88s;--dl:0.1s"></div>
-            <div class="drop" style="--x:52;--d:1.15s;--dl:0.7s"></div>
-            <div class="drop" style="--x:59;--d:0.92s;--dl:0.35s"></div>
+            <div class="drop" style="--x:37;--d:1.05s;--dl:0.5s"></div>
+            <div class="drop" style="--x:43;--d:0.88s;--dl:0.1s"></div>
+            <div class="drop" style="--x:49;--d:1.4s;--dl:0.8s"></div>
+            <div class="drop" style="--x:54;--d:1.15s;--dl:0.7s"></div>
+            <div class="drop" style="--x:60;--d:0.92s;--dl:0.35s"></div>
             <div class="drop" style="--x:66;--d:1.08s;--dl:0.2s"></div>
-            <div class="drop" style="--x:73;--d:0.87s;--dl:0.55s"></div>
-            <div class="drop" style="--x:80;--d:1.18s;--dl:0.45s"></div>
-            <div class="drop" style="--x:87;--d:0.93s;--dl:0.65s"></div>
-            <div class="drop" style="--x:94;--d:1.02s;--dl:0.3s"></div>
+            <div class="drop" style="--x:72;--d:0.87s;--dl:0.55s"></div>
+            <div class="drop" style="--x:78;--d:1.35s;--dl:0.9s"></div>
+            <div class="drop" style="--x:83;--d:1.18s;--dl:0.45s"></div>
+            <div class="drop" style="--x:89;--d:0.93s;--dl:0.65s"></div>
+            <div class="drop" style="--x:95;--d:1.02s;--dl:0.3s"></div>
         </div>
 
         <!-- ══ Main Content ══ -->
@@ -1341,23 +1723,24 @@
             <!-- ── Header ── -->
             <header class="header">
                 <div class="header-left">
-                    <svg class="mascot" viewBox="0 0 90 110" role="img" aria-label="Giọt mưa đang mỉm cười">
+                    <svg id="mascot-hero" class="mascot" viewBox="0 0 90 110" role="img"
+                        aria-label="Giọt mưa đang mỉm cười" title="Bấm vào tớ để cùng nhảy nhót nhé!">
                         <defs>
                             <linearGradient id="dropGrad" x1="0" y1="0" x2="0" y2="1">
                                 <stop offset="0%" stop-color="#5dd8f7" />
                                 <stop offset="100%" stop-color="#20b7dc" />
                             </linearGradient>
                         </defs>
-                        <path d="M45 5C31 27 10 51 10 72a35 35 0 0 0 70 0C80 51 59 27 45 5Z" fill="url(#dropGrad)"
-                            stroke="#087ba8" stroke-width="3" />
-                        <ellipse cx="32" cy="70" rx="3.2" ry="4.5" fill="#174564" />
-                        <ellipse cx="58" cy="70" rx="3.2" ry="4.5" fill="#174564" />
+                        <path class="mascot-body" d="M45 5C31 27 10 51 10 72a35 35 0 0 0 70 0C80 51 59 27 45 5Z"
+                            fill="url(#dropGrad)" stroke="#087ba8" stroke-width="3" />
+                        <ellipse class="mascot-eye mascot-eye-left" cx="32" cy="70" rx="3.2" ry="4.5" fill="#174564" />
+                        <ellipse class="mascot-eye mascot-eye-right" cx="58" cy="70" rx="3.2" ry="4.5" fill="#174564" />
                         <ellipse cx="32" cy="68" rx="1.5" ry="1.5" fill="white" opacity="0.8" />
                         <ellipse cx="58" cy="68" rx="1.5" ry="1.5" fill="white" opacity="0.8" />
-                        <path d="M36 83q9 9 18 0" fill="none" stroke="#174564" stroke-width="3"
+                        <path class="mascot-mouth" d="M36 83q9 9 18 0" fill="none" stroke="#174564" stroke-width="3"
                             stroke-linecap="round" />
-                        <circle cx="23" cy="79" r="5.5" fill="#ff9aab" opacity="0.7" />
-                        <circle cx="67" cy="79" r="5.5" fill="#ff9aab" opacity="0.7" />
+                        <circle class="mascot-blush" cx="23" cy="79" r="5.5" fill="#ff9aab" opacity="0.75" />
+                        <circle class="mascot-blush" cx="67" cy="79" r="5.5" fill="#ff9aab" opacity="0.75" />
                     </svg>
                     <div>
                         <p class="eyebrow">Trò chơi giáo dục</p>
@@ -1415,9 +1798,17 @@
                         <h2 id="exercise-title" class="exercise-title">3. Chọn từ thích hợp trong ngoặc đơn để hoàn
                             thành đoạn văn.</h2>
                     </div>
-                    <div class="progress-badge" aria-live="polite">
-                        <span>📝</span>
-                        <span><span id="progress-count">0</span>/5 ô đã hoàn thành</span>
+                    <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                        <div class="progress-badge" id="timer-badge"
+                            style="display:none; background:#fff8ee; color:#c05621; border:1px solid #fed7aa;"
+                            aria-label="Thời gian làm bài">
+                            <span>⏱️</span>
+                            <span id="timer-display">00:00</span>
+                        </div>
+                        <div class="progress-badge" aria-live="polite">
+                            <span>📝</span>
+                            <span><span id="progress-count">0</span>/5 ô đã hoàn thành</span>
+                        </div>
                     </div>
                 </div>
 
@@ -1479,7 +1870,11 @@
                 <div
                     style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:4px;">
                     <h2 id="result-heading" class="result-heading">🏆 Kết quả của bạn</h2>
-                    <span id="attempt-badge" class="attempt-badge">🌱 Lượt làm bài: 1</span>
+                    <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                        <span id="duration-badge" class="attempt-badge"
+                            style="background:#fff4e6; border-color:#ffd8a8; color:#d9480f;">⏱️ Thời gian: 0s</span>
+                        <span id="attempt-badge" class="attempt-badge">🌱 Lượt làm bài: 1</span>
+                    </div>
                 </div>
                 <p id="encouragement" class="encouragement"></p>
                 <div class="result-grid">
@@ -1531,7 +1926,9 @@
                         <div class="stat-card">
                             <p class="stat-card-label">Số học sinh đã làm</p>
                             <p class="stat-card-value" id="stat-total">0</p>
-                            <span id="stat-total-sub" style="font-size:12px; color:var(--ink-light); display:block; margin-top:4px;">(0 lượt nộp)</span>
+                            <span id="stat-total-sub"
+                                style="font-size:12px; color:var(--ink-light); display:block; margin-top:4px;">(0 lượt
+                                nộp)</span>
                         </div>
                         <div class="stat-card">
                             <p class="stat-card-label">Điểm trung bình</p>
@@ -1544,6 +1941,10 @@
                         <div class="stat-card">
                             <p class="stat-card-label">Điểm 10 tuyệt đối</p>
                             <p class="stat-card-value" id="stat-perfect">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <p class="stat-card-label">Thời gian làm bài TB</p>
+                            <p class="stat-card-value" id="stat-time-avg" style="font-size:20px; line-height:1.3;">–</p>
                         </div>
                     </div>
                 </div>
@@ -1560,7 +1961,7 @@
                                     <th>STT</th>
                                     <th>Họ và tên</th>
                                     <th>Lớp</th>
-                                    <th>Thời gian</th>
+                                    <th>Thời gian nộp</th>
                                     <th>Ô 1</th>
                                     <th>Ô 2</th>
                                     <th>Ô 3</th>
@@ -1571,6 +1972,7 @@
                                     <th>Điểm</th>
                                     <th>Tỉ lệ</th>
                                     <th>Lượt</th>
+                                    <th>Thời gian làm</th>
                                 </tr>
                             </thead>
                             <tbody id="submissions-body">
@@ -1661,7 +2063,10 @@
                 submitted: false,
                 pending: false,
                 soundEnabled: false,
-                attemptNumber: 1
+                attemptNumber: 1,
+                startTime: null,
+                timerInterval: null,
+                lastDurationFormatted: ''
             };
 
             let audioCtx = null;
@@ -1802,6 +2207,69 @@
             }
 
             /* ══════════════════════════════════════════
+               4b. TIMER SYSTEM (Thời gian làm bài)
+               ══════════════════════════════════════════ */
+            function startTimer() {
+                clearInterval(STATE.timerInterval);
+                STATE.startTime = Date.now();
+                const timerEl = $('timer-badge');
+                if (timerEl) timerEl.style.display = 'inline-flex';
+                updateTimerDisplay(0);
+
+                STATE.timerInterval = setInterval(() => {
+                    if (!STATE.startTime || STATE.submitted) return;
+                    const elapsedSec = Math.floor((Date.now() - STATE.startTime) / 1000);
+                    updateTimerDisplay(elapsedSec);
+                }, 1000);
+            }
+
+            function stopTimer() {
+                clearInterval(STATE.timerInterval);
+                STATE.timerInterval = null;
+            }
+
+            function updateTimerDisplay(sec) {
+                const displayEl = $('timer-display');
+                if (!displayEl) return;
+                const m = Math.floor(sec / 60);
+                const s = sec % 60;
+                displayEl.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+            }
+
+            function formatDuration(sec) {
+                if (!sec || sec <= 0) return 'Dưới 1 giây';
+                const m = Math.floor(sec / 60);
+                const s = sec % 60;
+                if (m > 0) {
+                    return `${m} phút ${s > 0 ? s + ' giây' : ''}`.trim();
+                }
+                return `${s} giây`;
+            }
+
+            function parseDurationToSeconds(val) {
+                if (val === undefined || val === null || val === '') return 0;
+                if (typeof val === 'number') return isNaN(val) ? 0 : Math.round(val);
+                const str = String(val).trim();
+                if (str === '–' || str === '-' || !str) return 0;
+                if (/^dưới\s*1\s*giây/i.test(str)) return 1;
+
+                let totalSec = 0;
+                const minMatch = str.match(/(\d+)\s*phút/i);
+                const secMatch = str.match(/(\d+)\s*giây/i);
+
+                if (minMatch) {
+                    totalSec += parseInt(minMatch[1], 10) * 60;
+                }
+                if (secMatch) {
+                    totalSec += parseInt(secMatch[1], 10);
+                }
+                if (!minMatch && !secMatch && !isNaN(Number(str))) {
+                    totalSec = parseInt(str, 10);
+                }
+                return totalSec;
+            }
+
+            /* ══════════════════════════════════════════
                5. UI HELPERS & VISUAL EFFECTS
                ══════════════════════════════════════════ */
             function setStatus(msg, isError = false) {
@@ -1906,6 +2374,10 @@
                 $('score-result').textContent = `${score}/10`;
                 $('accuracy-result').textContent = `${accuracy_percent}%`;
                 $('attempt-badge').textContent = `🌱 Lượt làm bài: ${STATE.attemptNumber}`;
+                const durText = serverResult.duration_formatted || STATE.lastDurationFormatted || '–';
+                if ($('duration-badge')) {
+                    $('duration-badge').textContent = `⏱️ Thời gian: ${durText}`;
+                }
                 $('encouragement').textContent = encouragement;
 
                 // Hiển thị phản hồi sư phạm chi tiết (do máy chủ trả về)
@@ -2011,6 +2483,9 @@
                 $('student-name').readOnly = false;
                 $('student-class').disabled = false;
 
+                // Bắt đầu lại đồng hồ bấm giờ cho lượt làm bài mới
+                startTimer();
+
                 updateProgress();
                 setStatus(`Bắt đầu lượt làm bài thứ ${STATE.attemptNumber}! Hãy đọc kỹ đoạn văn và tự tin chinh phục nhé! 🌟`);
 
@@ -2107,6 +2582,9 @@
                 $('exercise-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
                 selects[0].focus({ preventScroll: true });
 
+                // Bắt đầu tính giờ làm bài từ khi bấm bắt đầu
+                startTimer();
+
                 if (prevAttempts > 0) {
                     setStatus(`Chào mừng ${identity.name}! Bạn đã làm bài ${prevAttempts} lần trước đó. Đây là lượt làm bài thứ ${STATE.attemptNumber} của bạn! 🌟`);
                 } else {
@@ -2115,6 +2593,83 @@
                 playWelcomeJingle();
             });
 
+            // ── Hiệu ứng giọt nước bắn li ti khi chọn từ (Drop splash) ──
+            function spawnDropSplash(el) {
+                if (!el) return;
+                const rect = el.getBoundingClientRect();
+                const splash = document.createElement('div');
+                splash.className = 'select-drop-splash';
+                splash.style.left = `${rect.left + rect.width / 2}px`;
+                splash.style.top = `${rect.top + rect.height / 2}px`;
+
+                for (let i = 0; i < 7; i++) {
+                    const spark = document.createElement('span');
+                    spark.className = 'spark-drop';
+                    const angle = (i * (360 / 7) + Math.random() * 15) * (Math.PI / 180);
+                    const dist = 26 + Math.random() * 16;
+                    spark.style.setProperty('--tx', `${Math.cos(angle) * dist}px`);
+                    spark.style.setProperty('--ty', `${Math.sin(angle) * dist}px`);
+                    splash.appendChild(spark);
+                }
+                document.body.appendChild(splash);
+                setTimeout(() => splash.remove(), 600);
+            }
+
+            // ── Hiệu ứng mưa rơi từ đám mây khi học sinh bấm vào mây ──
+            function spawnCloudRain(x, y) {
+                for (let i = 0; i < 8; i++) {
+                    const drop = document.createElement('div');
+                    drop.className = 'interactive-drop';
+                    drop.style.left = `${x + (Math.random() * 80 - 40)}px`;
+                    drop.style.top = `${y + (Math.random() * 20 - 10)}px`;
+                    drop.style.animationDuration = `${0.65 + Math.random() * 0.35}s`;
+                    document.body.appendChild(drop);
+                    setTimeout(() => drop.remove(), 900);
+                }
+            }
+
+            // ── Khởi tạo tương tác Đám mây & Mascot giọt nước ──
+            function initWeatherInteractions() {
+                // Tương tác bấm vào mây
+                document.querySelectorAll('.cloud').forEach(cloud => {
+                    cloud.addEventListener('click', e => {
+                        cloud.classList.remove('bounce');
+                        void cloud.offsetWidth;
+                        cloud.classList.add('bounce');
+                        playWaterDrop();
+                        spawnCloudRain(e.clientX, e.clientY);
+                    });
+                });
+
+                // Tương tác bấm vào Mascot giọt nước
+                const mascotEl = $('mascot-hero');
+                if (mascotEl) {
+                    mascotEl.addEventListener('click', () => {
+                        mascotEl.classList.remove('jump');
+                        void mascotEl.offsetWidth;
+                        mascotEl.classList.add('jump');
+                        playTone(587, 0.12, 'sine', 0.04);
+                        setTimeout(() => playTone(880, 0.2, 'sine', 0.05), 80);
+
+                        const rect = mascotEl.getBoundingClientRect();
+                        const cx = rect.left + rect.width / 2;
+                        const cy = rect.top + rect.height / 2;
+                        for (let i = 0; i < 9; i++) {
+                            const bubble = document.createElement('div');
+                            bubble.className = 'mascot-bubble';
+                            const angle = (i * 40 + Math.random() * 15) * (Math.PI / 180);
+                            const dist = 32 + Math.random() * 28;
+                            bubble.style.left = `${cx}px`;
+                            bubble.style.top = `${cy}px`;
+                            bubble.style.setProperty('--bx', `${Math.cos(angle) * dist}px`);
+                            bubble.style.setProperty('--by', `${Math.sin(angle) * dist}px`);
+                            document.body.appendChild(bubble);
+                            setTimeout(() => bubble.remove(), 800);
+                        }
+                    });
+                }
+            }
+
             // ── Thay đổi trong dropdown ──
             selects.forEach(sel => {
                 sel.addEventListener('change', () => {
@@ -2122,6 +2677,9 @@
                     updateProgress();
                     if (!STATE.submitted) setStatus('');
                     playWaterDrop();
+                    if (sel.value) {
+                        spawnDropSplash(sel);
+                    }
                 });
             });
 
@@ -2185,8 +2743,15 @@
 
                 STATE.pending = true;
                 $('submit-button').disabled = true;
-                setStatus('Đang gửi bài và chấm điểm từ máy chủ Google Sheets...');
+                setStatus('Đang gửi bài và chấm điểm ...');
                 playClick();
+
+                // Tính thời gian làm bài từ khi bấm bắt đầu đến khi nộp bài
+                stopTimer();
+                const durationMs = STATE.startTime ? (Date.now() - STATE.startTime) : 0;
+                const durationSeconds = Math.max(1, Math.round(durationMs / 1000));
+                const durationFormatted = formatDuration(durationSeconds);
+                STATE.lastDurationFormatted = durationFormatted;
 
                 // Thu thập 5 đáp án của học sinh
                 const studentAnswers = selects.map(s => s.value);
@@ -2195,6 +2760,8 @@
                     student_name: identity.name,
                     student_class: identity.studentClass,
                     submitted_at: new Date().toISOString(),
+                    duration_seconds: durationSeconds,
+                    duration_formatted: durationFormatted,
                     answers: studentAnswers,
                     answer_1: studentAnswers[0],
                     answer_2: studentAnswers[1],
@@ -2272,7 +2839,7 @@
                 }
 
                 // Khi đã có API_URL: kết nối xác thực từ xa với Google Apps Script
-                $('teacher-login-error').textContent = 'Đang kết nối hệ thống Google Sheets...';
+                $('teacher-login-error').textContent = 'Đang kiểm tra...';
                 $('teacher-login-error').classList.add('show');
                 $('teacher-login-error').style.color = 'var(--ink-light)';
 
@@ -2308,6 +2875,10 @@
                 if (!totalSubmissions) {
                     $('stat-total').textContent = 0;
                     if ($('stat-total-sub')) $('stat-total-sub').textContent = '(0 lượt nộp)';
+                    $('stat-avg').textContent = '–';
+                    $('stat-accuracy').textContent = '–';
+                    $('stat-perfect').textContent = 0;
+                    if ($('stat-time-avg')) $('stat-time-avg').textContent = '–';
                     renderSubmissionsTable([]);
                     return;
                 }
@@ -2348,6 +2919,17 @@
                 $('stat-accuracy').textContent = `${avgAcc}%`;
                 const perfect = uniqueStudents.filter(d => d.bestScore === 10).length;
                 $('stat-perfect').textContent = perfect;
+
+                // Thời gian làm bài trung bình offline (tính trên các lượt nộp có thời gian)
+                const validDurations = data
+                    .map(d => parseDurationToSeconds(d.duration_formatted || d.duration || d.duration_seconds))
+                    .filter(sec => sec > 0);
+                const avgSec = validDurations.length > 0
+                    ? Math.round(validDurations.reduce((sum, d) => sum + d, 0) / validDurations.length)
+                    : 0;
+                if ($('stat-time-avg')) {
+                    $('stat-time-avg').textContent = avgSec > 0 ? formatDuration(avgSec) : '–';
+                }
 
                 // Danh sách bài nộp
                 renderSubmissionsTable(data);
@@ -2392,6 +2974,23 @@
                 $('stat-accuracy').textContent = stats.avgAccuracy !== undefined ? `${stats.avgAccuracy}%` : '–';
                 $('stat-perfect').textContent = stats.perfectCount !== undefined ? stats.perfectCount : 0;
 
+                // Thời gian làm bài trung bình từ Google Sheets
+                if ($('stat-time-avg')) {
+                    if (stats.avgDuration && stats.avgDuration !== '–') {
+                        $('stat-time-avg').textContent = stats.avgDuration;
+                    } else if (stats.avgDurationSec !== undefined && stats.avgDurationSec > 0) {
+                        $('stat-time-avg').textContent = formatDuration(stats.avgDurationSec);
+                    } else {
+                        const validDurations = (submissions || [])
+                            .map(d => parseDurationToSeconds(d.duration_formatted || d.duration || d.duration_seconds))
+                            .filter(sec => sec > 0);
+                        const avgSec = validDurations.length > 0
+                            ? Math.round(validDurations.reduce((sum, d) => sum + d, 0) / validDurations.length)
+                            : 0;
+                        $('stat-time-avg').textContent = avgSec > 0 ? formatDuration(avgSec) : '–';
+                    }
+                }
+
                 renderSubmissionsTable(submissions);
                 if (stats.questionStats) {
                     renderQuestionStatsAndChart(stats.questionStats);
@@ -2433,6 +3032,7 @@
                         <td><strong>${d.score}/10</strong></td>
                         <td>${d.accuracy_percent}%</td>
                         <td><span class="attempt-pill">Lượt ${d.attempt_number || 1}</span></td>
+                        <td><strong>${escapeHtml(d.duration_formatted || d.duration || '–')}</strong></td>
                     `;
                     tbody.appendChild(row);
                 });
@@ -2498,7 +3098,7 @@
                     alert('Chưa có bài nộp nào để xuất.');
                     return;
                 }
-                const headers = ['STT', 'Họ và tên', 'Lớp', 'Thời gian', 'Ô 1', 'Ô 2', 'Ô 3', 'Ô 4', 'Ô 5', 'Đúng', 'Sai', 'Điểm', 'Tỉ lệ', 'Lượt'];
+                const headers = ['STT', 'Họ và tên', 'Lớp', 'Thời gian nộp', 'Ô 1', 'Ô 2', 'Ô 3', 'Ô 4', 'Ô 5', 'Đúng', 'Sai', 'Điểm', 'Tỉ lệ', 'Lượt', 'Thời gian làm bài'];
                 const rows = data.map((d, i) => [
                     i + 1,
                     `"${d.student_name}"`,
@@ -2513,7 +3113,8 @@
                     d.wrong_count,
                     d.score,
                     `${d.accuracy_percent}%`,
-                    d.attempt_number || 1
+                    d.attempt_number || 1,
+                    `"${d.duration_formatted || d.duration || '–'}"`
                 ]);
                 const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
                 const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -2533,6 +3134,7 @@
                11. INITIALIZATION
                ══════════════════════════════════════════ */
             updateProgress();
+            initWeatherInteractions();
 
         })();
     </script>

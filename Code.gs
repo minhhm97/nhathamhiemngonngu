@@ -50,7 +50,8 @@ function setup() {
       'Số câu sai',
       'Điểm số (/10)',
       'Tỉ lệ đúng (%)',
-      'Lượt làm bài'
+      'Lượt làm bài',
+      'Thời gian làm bài'
     ];
     subSheet.appendRow(headers);
     const headerRange = subSheet.getRange(1, 1, 1, headers.length);
@@ -59,6 +60,13 @@ function setup() {
     headerRange.setFontWeight('bold');
     headerRange.setHorizontalAlignment('center');
     subSheet.setFrozenRows(1);
+  } else if (subSheet.getLastColumn() < 14) {
+    // Tự động bổ sung tiêu đề cột 14 nếu bảng đã tạo từ trước
+    subSheet.getRange(1, 14).setValue('Thời gian làm bài')
+      .setBackground('#368963')
+      .setFontColor('#ffffff')
+      .setFontWeight('bold')
+      .setHorizontalAlignment('center');
   }
 
   // 2. Tạo sheet Answers (Lưu đáp án trực tiếp trên Google Sheets)
@@ -136,6 +144,46 @@ function normalizeName(s) {
     .normalize('NFC')
     .replace(/\s+/g, ' ')
     .toUpperCase();
+}
+
+/**
+ * Định dạng số giây sang phút / giây (VD: 85 -> "1 phút 25 giây")
+ */
+function formatDuration(sec) {
+  if (!sec || sec <= 0) return 'Dưới 1 giây';
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  if (m > 0) {
+    return `${m} phút ${s > 0 ? s + ' giây' : ''}`.trim();
+  }
+  return `${s} giây`;
+}
+
+/**
+ * Chuyển chuỗi thời gian hoặc số giây thành số giây nguyên
+ * Hỗ trợ: "1 phút 25 giây", "45 giây", "Dưới 1 giây", số nguyên,...
+ */
+function parseDurationToSeconds(val) {
+  if (val === undefined || val === null || val === '') return 0;
+  if (typeof val === 'number') return isNaN(val) ? 0 : Math.round(val);
+  const str = String(val).trim();
+  if (str === '–' || str === '-' || !str) return 0;
+  if (/^dưới\s*1\s*giây/i.test(str)) return 1;
+
+  let totalSec = 0;
+  const minMatch = str.match(/(\d+)\s*phút/i);
+  const secMatch = str.match(/(\d+)\s*giây/i);
+
+  if (minMatch) {
+    totalSec += parseInt(minMatch[1], 10) * 60;
+  }
+  if (secMatch) {
+    totalSec += parseInt(secMatch[1], 10);
+  }
+  if (!minMatch && !secMatch && !isNaN(Number(str))) {
+    totalSec = parseInt(str, 10);
+  }
+  return totalSec;
 }
 
 /**
@@ -236,6 +284,9 @@ function doPost(e) {
     // Lượt làm bài thực tế: Tự động cộng thêm lượt nếu học sinh đã làm trước đó
     const currentAttempt = previousAttempts + 1;
 
+    // Thời gian làm bài (từ lúc bấm bắt đầu đến khi nộp bài)
+    const durationFormatted = postData.duration_formatted || (postData.duration_seconds ? formatDuration(Number(postData.duration_seconds)) : '–');
+
     const timestamp = postData.submitted_at || new Date().toISOString();
     const row = [
       timestamp,
@@ -250,13 +301,14 @@ function doPost(e) {
       wrongCount,
       score,
       accuracyPercent,
-      currentAttempt // Đã tự động cộng dồn lượt làm bài
+      currentAttempt, // Đã tự động cộng dồn lượt làm bài
+      durationFormatted // Thời gian làm bài
     ];
 
     subSheet.appendRow(row);
     lock.releaseLock();
 
-    // TRẢ KẾT QUẢ ĐÃ CHẤM VỀ CHO CLIENT (kèm lượt làm bài thực tế)
+    // TRẢ KẾT QUẢ ĐÃ CHẤM VỀ CHO CLIENT (kèm lượt làm bài thực tế & thời gian làm bài)
     return responseJSON({
       success: true,
       score: score,
@@ -265,6 +317,7 @@ function doPost(e) {
       accuracy_percent: accuracyPercent,
       encouragement: encouragement,
       attempt_number: currentAttempt,
+      duration_formatted: durationFormatted,
       is_repeat_attempt: previousAttempts > 0,
       results: results
     });
@@ -303,6 +356,8 @@ function doGet(e) {
           avgScore: 0,
           avgAccuracy: 0,
           perfectCount: 0,
+          avgDurationSec: 0,
+          avgDuration: '–',
           questionStats: []
         }
       });
@@ -325,7 +380,8 @@ function doGet(e) {
       wrong_count: Number(r[9]) || 0,
       score: Number(r[10]) || 0,
       accuracy_percent: Number(r[11]) || 0,
-      attempt_number: Number(r[12]) || 1
+      attempt_number: Number(r[12]) || 1,
+      duration: r[13] || '–'
     }));
 
     // Nhóm theo học sinh duy nhất (Tên in hoa + Lớp) để KHÔNG tính lặp học sinh mới
@@ -381,6 +437,15 @@ function doGet(e) {
       };
     });
 
+    // Thời gian làm bài trung bình (tính trên các lượt nộp có ghi nhận thời gian > 0)
+    const validDurations = submissions
+      .map(s => parseDurationToSeconds(s.duration))
+      .filter(sec => sec > 0);
+    const avgDurationSec = validDurations.length > 0
+      ? Math.round(validDurations.reduce((sum, d) => sum + d, 0) / validDurations.length)
+      : 0;
+    const avgDuration = avgDurationSec > 0 ? formatDuration(avgDurationSec) : '–';
+
     return responseJSON({
       success: true,
       submissions: submissions,
@@ -392,6 +457,8 @@ function doGet(e) {
         avgScore: avgScore,
         avgAccuracy: avgAccuracy,
         perfectCount: perfectCount,
+        avgDurationSec: avgDurationSec,
+        avgDuration: avgDuration,
         questionStats: questionStats
       }
     });
